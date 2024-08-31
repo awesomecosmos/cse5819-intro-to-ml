@@ -1,57 +1,6 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb}   %defines equations
-\usepackage{geometry}
- \geometry{
- a4paper,
- total={170mm,257mm},
- left=20mm,
- top=20mm,
- }
- \usepackage{graphicx}
- \usepackage{titling}
+\section{ChatGPT}
 
-\title{Part One: ChatGPT Self-Learning}
-\author{Aayushi Verma}
-\date{due 9/2/24}
- 
- \usepackage{fancyhdr}
-\fancypagestyle{plain}{%  the preset of fancyhdr 
-    \fancyhf{} % clear all header and footer fields
-    %\fancyfoot[R]{\includegraphics[width=2cm]{KULEUVEN_GENT_RGB_LOGO.png}}
-    \fancyfoot[L]{\thedate}
-    \fancyhead[L]{CSE 5819 Assignment \#1}
-    \fancyhead[R]{\theauthor}
-}
-\makeatletter
-\def\@maketitle{%
-  \newpage
-  \null
-  \vskip 1em%
-  \begin{center}%
-  \let \footnote \thanks
-    {\LARGE \@title \par}%
-    \vskip 1em%
-    %{\large \@date}%
-  \end{center}%
-  \par
-  \vskip 1em}
-\makeatother
-
-\usepackage{lipsum}  
-\usepackage{cmbright}
-
-\begin{document}
-
-\maketitle
-
-%\noindent\begin{tabular}{@{}ll}
-%    Student & \theauthor\\
-%     Promotor &  dr. Gilles Callebaut\\
-%     Co-promotors & ing. Jarne Van Mulders, ing. Guus Leenders
-%\end{tabular}
-
-\section{What are the different learning tasks in machine learning?}
+\subsection{What are the different learning tasks in machine learning?}
 In machine learning, there are several different learning tasks, each suited to different types of problems and data. These tasks can be broadly categorized into the following:
 
 \begin{enumerate}
@@ -116,7 +65,7 @@ In machine learning, there are several different learning tasks, each suited to 
     \end{itemize}
 \end{enumerate}
 
-\section{What is the definition of supervised learning?}
+\subsection{What is the definition of supervised learning?}
 \textbf{Supervised learning} is a type of machine learning where a model is trained on a labeled dataset. In this context, "labeled" means that each training example is paired with an output label or target that the model is expected to predict. The goal of supervised learning is to learn a mapping from inputs (features) to outputs (labels) so that the model can accurately predict the output for new, unseen data.
 
 \textbf{Key Components:}
@@ -133,7 +82,7 @@ In machine learning, there are several different learning tasks, each suited to 
     \item \textbf{Regression}: Predicting the price of a house based on its features like size, location, and number of bedrooms.
 \end{itemize}
 
-\section{What are the widely used methods to solve supervised learning problems?}
+\subsection{What are the widely used methods to solve supervised learning problems?}
 There are several widely used methods to solve supervised learning problems, each suited to different types of data and tasks. Here’s a breakdown of some of the most common methods:
 
 \begin{enumerate}
@@ -212,7 +161,7 @@ There are several widely used methods to solve supervised learning problems, eac
     \end{itemize}
 \end{enumerate}
 
-\section{What is the definition of unsupervised learning?}
+\subsection{What is the definition of unsupervised learning?}
 \textbf{Unsupervised learning} is a type of machine learning where the model is trained on a dataset without labeled outputs. In this approach, the model tries to learn the underlying structure, patterns, or distribution in the data without any explicit guidance on what the correct output should be. The goal is to discover hidden patterns, groupings, or features within the data.
 
 \textbf{Key Characteristics:}
@@ -244,7 +193,7 @@ There are several widely used methods to solve supervised learning problems, eac
 
 In summary, unsupervised learning involves analyzing and finding hidden structures in unlabeled data, making it useful for exploratory data analysis, pattern recognition, and feature extraction.
 
-\section{What are the widely used methods to solve unsupervised learning problems?}
+\subsection{What are the widely used methods to solve unsupervised learning problems?}
 Unsupervised learning involves a variety of methods designed to discover patterns, structures, and relationships within unlabeled data. Here are some of the most widely used methods to solve unsupervised learning problems:
 
 \begin{enumerate}
@@ -312,6 +261,3 @@ Unsupervised learning involves a variety of methods designed to discover pattern
         \item \textbf{Non-negative Matrix Factorization (NMF)}: Similar to SVD but with the constraint that the resulting matrices have no negative elements, used in topics modeling and image processing.
     \end{itemize}
 \end{enumerate}
-
-
-\end{document}
