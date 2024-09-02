@@ -30,7 +30,7 @@
     \item[\circledtext{D}] K-nearest neighbors
 \end{itemize}
 
-\textcolor{blue}{Options A, B, C, and D are all supervised learning problems.}
+\textcolor{blue}{Options A, B, C, and D are all algorithms for solving supervised learning problems.}
 
 \subsection{For a quadratic form as follows (Eq. \ref{eq_q4}), please compute the gradient of this function $f(x)$ where $x$ is a vector in $R^n$, $A$ is a $n \times n$ matrix, $B$ is a vector in $R^n$, and $C$ is a scalar. (20 pts) (Write your derivation. Do not just copy-paste what GPT provides if you use GPT.)}
 
@@ -39,12 +39,160 @@
     \label{eq_q4}
 \end{equation}
 
+To find the gradient of $f(x)$, we have:
+\begin{align}
+    \nabla_x f(x) &= \frac{\partial}{\partial x} (x^T A x + B^T x + C) \nonumber \\
+    &= \frac{\partial}{\partial x} x^T A x + \frac{\partial}{\partial x} B^T + \frac{\partial}{\partial x} C
+    \label{eq_q4_1}
+\end{align} 
 
-\subsection{The following function (Eq. \ref{eq_q5}) is a quadratic form where $a_{12}=a_{21`'}$, can you write out its gradient, and compare with the above gradient formula you derived in Problem 4. (10 pts)}
+Let's take the derivatives of Eq. \ref{eq_q4_1}. First, from the Matrix Cookbook (posted on HuskyCT) Eq. 81, we can use the following identity:
+\begin{equation}
+    \frac{\partial}{\partial x} x^T A x = (A + A^T) x  
+    \label{eq_q4_2}
+\end{equation}
+
+Using normal differentiation rules, we have:
+\begin{equation}
+    \frac{\partial}{\partial x} B^T x = B  
+    \label{eq_q4_3}
+\end{equation}
+
+and: 
+\begin{equation}
+    \frac{\partial}{\partial x} C = 0  
+    \label{eq_q4_4}
+\end{equation}
+
+Therefore, substituting Eq. \ref{eq_q4_2}, \ref{eq_q4_3} and \ref{eq_q4_4} back into Eq. \ref{eq_q4_1}, we find the gradient of $f(x)$ as:
+\begin{align}
+    \therefore \nabla_x f(x) &= \frac{\partial}{\partial x} x^T A x + \frac{\partial}{\partial x} B^T + \frac{\partial}{\partial x} C \nonumber \\
+    &= (A + A^T) x + B + 0 \nonumber \\
+    &= (A + A^T) x + B
+    \label{eq_q4_5}
+\end{align} 
+
+\subsection{The following function (Eq. \ref{eq_q5}) is a quadratic form where $a_{12}=a_{21}$, can you write out its gradient, and compare with the above gradient formula you derived in Problem 4. (10 pts)}
 
 \begin{equation}
     f(x) = a_{11}x_1^2 + a_{12}x_1 x_2 + a_{21}x_2 x_1 + a_{22} x_2^2 + b_1 x_1 + b_2 x_2 + c
     \label{eq_q5}
 \end{equation}
 
-\subsection{For a sigmoid function $\sigma (s)=\frac{1}{1+e^{-s}}$, where $s$ is a scalar, prove that its derivative satisfies: $\sigma(s) = \sigma(s) \cdot (1-\sigma (s))$. (20pts)}
+Since we are given $a_{12}=a_{21}$, Eq. \ref{eq_q5} simplifies to:
+
+\begin{equation}
+    f(x) = a_{11}x_1^2 + 2 a_{12}x_1 x_2 + a_{22} x_2^2 + b_1 x_1 + b_2 x_2 + c
+    \label{eq_q5_1}
+\end{equation}
+
+We need to find the gradient with respect to $x$. Since there are multiple $x$, i.e. $x_1$ and $x_2$, we take the derivative of Eq. \ref{eq_q5_1} with respect to each $x_1$ and $x_2$.
+
+\begin{equation}
+    \frac{\partial f(x)}{\partial x_1} = 2 a_{11}x_1 + 2 a_{12}x_2 + b_1
+    \label{eq_q5_2}
+\end{equation}
+
+\begin{equation}
+    \frac{\partial f(x)}{\partial x_2} = 2 a_{12}x_1 + 2 a_{22}x_2 + b_2
+    \label{eq_q5_3}
+\end{equation}
+
+Therefore the gradient of $f(x)$ is:
+
+\begin{equation}
+    \nabla_x f(x) = \begin{bmatrix}
+        \frac{\partial f(x)}{\partial x_1} \\
+        \frac{\partial f(x)}{\partial x_2}
+    \end{bmatrix}
+    = \begin{bmatrix}
+        2 a_{11}x_1 + 2 a_{12}x_2 + b_1 \\
+        2 a_{12}x_1 + 2 a_{22}x_2 + b_2
+    \end{bmatrix}
+    \label{eq_q5_4}
+\end{equation}
+
+We can re-write Eq. \ref{eq_q5_4} like:
+\begin{align}
+    \nabla_x f(x) &= 
+    \begin{bmatrix}
+        2 a_{11}x_1 + 2 a_{12}x_2 \\
+        2 a_{12}x_1 + 2 a_{22}x_2
+    \end{bmatrix} +
+    \begin{bmatrix}
+        b_1 \\
+        b_2
+    \end{bmatrix} \\
+    &= 2 
+    \begin{bmatrix}
+        a_{11} & a_{12} \nonumber \\
+        a_{12} & a_{22}
+    \end{bmatrix} \begin{bmatrix}
+        x_1 \\ x_2
+    \end{bmatrix} +
+    \begin{bmatrix}
+        b_1 \\
+        b_2
+    \end{bmatrix} \nonumber \\
+    &= 2 A x + B
+    \label{eq_q5_5}
+\end{align}
+
+If we compare Eq. \ref{eq_q5_5} with Eq. \ref{eq_q4_5} derived in Question 4, then given the condition $a_{12}=a_{21}$, both Eq. \ref{eq_q5_5} and Eq. \ref{eq_q4_5} are equivalent to each other, since $a_{12}=a_{21}$ implies a symmetrical matrix, in which case $A = A^T$. Therefore:
+
+\begin{align}
+    \therefore \nabla_x f(x) &= (A + A^T) x + B \nonumber \\
+    &= (2 A) x + B \nonumber \\
+    &= 2 A x + B
+    \label{eq_q5_6}
+\end{align}
+
+\subsection{For a sigmoid function $\sigma (s)=\frac{1}{1+e^{-s}}$, where $s$ is a scalar, prove that its derivative satisfies: $\sigma'(s) = \sigma(s) \cdot (1-\sigma (s))$. (20pts)}
+
+We have: 
+\begin{align}
+    \sigma(s) &= \frac{1}{1+e^{-s}} \nonumber \\
+    &= (1+e^{-s})^-1
+    \label{eq_q6_1}
+\end{align}
+
+Using the chain rule:
+\begin{align}
+    \frac{d \sigma(s)}{d s} &= -1 \cdot (1+e^{-s})^{-2} \cdot \frac{d}{d s} (1+e^{-s}) \nonumber \\
+    &= -(1+e^{-s})^{-2} \cdot \frac{d}{d s} (1+e^{-s})
+    \label{eq_q6_2}
+\end{align}
+
+From Eq. \ref{eq_q6_2}, we have:
+\begin{align}
+    \frac{d}{d s} (1+e^{-s}) &= \frac{d}{d s} (1) + \frac{d}{d s} (e^{-s}) \nonumber \\
+    &= -e^{-s}
+    \label{eq_q6_3}
+\end{align}
+
+Substituting Eq. \ref{eq_q6_3} back into Eq. \ref{eq_q6_2}, we have:
+\begin{align}
+    \frac{d \sigma(s)}{d s} &= -(1+e^{-s})^{-2} \cdot -e^{-s} \nonumber \\
+    &= (1+e^{-s})^{-2} \cdot e^{-s} \nonumber \\
+    &= \frac{e^{-s}}{(1+e^{-s})^2} \nonumber \\
+    &= \frac{e^{-s}}{(1+e^{-s})(1+e^{-s})} \nonumber \\
+    &= \frac{1}{(1+e^{-s})} \cdot \frac{e^{-s}}{(1+e^{-s})} \nonumber \\
+    &= \sigma(s) \cdot \frac{e^{-s}}{(1+e^{-s})}
+    \label{eq_q6_4}
+\end{align}
+
+Note that we can rewrite:
+\begin{align} \label{eq_q6_5}
+    \frac{e^{-s}}{(1+e^{-s})} &= 1 - \frac{1}{(1+e^{-s})} = 1 - \sigma (s)  \\
+    &= \frac{1(1+e^{-s}) - 1}{(1+e^{-s})} \nonumber \\
+    &= \frac{1+e^{-s} - 1}{(1+e^{-s})} \nonumber \\
+    &= \frac{e^{-s}}{(1+e^{-s})} \nonumber
+\end{align}
+
+Therefore substituting Eq. \ref{eq_q6_5} back into Eq. \ref{eq_q6_4}, we have:
+\begin{align}
+    \therefore \frac{d \sigma(s)}{d s} &= \sigma(s) \cdot (1 - \sigma (s))
+    \label{eq_q6_6}
+\end{align}
+
+Therefore we proved that $\sigma'(s) = \sigma(s) \cdot (1-\sigma (s))$.
