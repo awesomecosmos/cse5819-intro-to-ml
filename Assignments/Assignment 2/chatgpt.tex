@@ -293,3 +293,19 @@ where:
   \]
 
 In convex optimization, the objective is to find the point $\mathbf{x} \in C$ that minimizes the convex function $f(\mathbf{x})$. This type of optimization problem is particularly well-studied because convex functions have desirable properties, such as having no local minima other than the global minimum, which makes solving these problems more tractable and efficient.
+
+\subsection{What is the 0-norm?}
+
+The \textbf{$0$-norm} of a vector $\mathbf{x} \in \mathbb{R}^n$, often denoted as $\|\mathbf{x}\|_0$, is not a true norm in the mathematical sense, but it is widely used in sparse modeling and optimization. The $0$-norm counts the number of non-zero elements in the vector. It is defined as:
+
+\[
+\|\mathbf{x}\|_0 = \text{number of non-zero elements in } \mathbf{x}
+\]
+
+Formally, it can be expressed as:
+\[
+\|\mathbf{x}\|_0 = \sum_{i=1}^{n} \mathbb{I}(x_i \neq 0)
+\]
+where $\mathbb{I}$ is the indicator function, which is 1 if $x_i \neq 0$ and 0 otherwise.
+
+Note that the $0$-norm does not satisfy all properties of a true norm, particularly the triangle inequality, which is why it is considered a "quasi-norm" in practice.
