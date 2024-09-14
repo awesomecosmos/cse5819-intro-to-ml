@@ -2,3 +2,172 @@
 
 You can start from the following prompts, but you need to create subsequent questions that attempt to understand the basic concepts of machine learning.
 
+\subsection{What is the definition of convex optimization?}
+
+Convex optimization is a subfield of optimization that deals with problems where the objective function is convex, and the feasible set is a convex set. Formally, a convex optimization problem can be expressed as:
+
+\begin{align*}
+\text{minimize } & f(x) \\
+\text{subject to } & x \in \mathcal{C},
+\end{align*}
+
+where:
+\begin{itemize}
+  \item \( f: \mathbb{R}^n \to \mathbb{R} \) is a convex function.
+  \item \( \mathcal{C} \subseteq \mathbb{R}^n \) is a convex set.
+\end{itemize}
+
+A function \( f: \mathbb{R}^n \to \mathbb{R} \) is convex if, for any two points \( x_1, x_2 \in \mathbb{R}^n \) and any \( \theta \in [0,1] \), the following inequality holds:
+
+\[
+f(\theta x_1 + (1 - \theta) x_2) \leq \theta f(x_1) + (1 - \theta) f(x_2).
+\]
+
+A set \( \mathcal{C} \) is convex if, for any two points \( x_1, x_2 \in \mathcal{C} \) and any \( \theta \in [0,1] \), the point \( \theta x_1 + (1 - \theta) x_2 \) is also in \( \mathcal{C} \).
+
+
+\subsection{How to solve an unconstrained convex optimization problem?}
+
+To solve an unconstrained convex optimization problem, you need to minimize a convex objective function \( f(x) \) over the variable \( x \in \mathbb{R}^n \). The problem can be formulated as:
+
+\begin{align*}
+\text{minimize } & f(x).
+\end{align*}
+
+Here are common methods to solve this problem:
+
+\begin{itemize}
+  \item \textbf{Gradient Descent:} This iterative method updates the solution \( x \) by moving in the direction of the negative gradient of the objective function. The update rule is:
+  \[
+  x_{k+1} = x_k - \alpha_k \nabla f(x_k),
+  \]
+  where \( \alpha_k \) is the step size (or learning rate) and \( \nabla f(x_k) \) is the gradient of \( f \) at \( x_k \).
+
+  \item \textbf{Newton's Method:} This method uses second-order information by incorporating the Hessian matrix \( \nabla^2 f(x) \). The update rule is:
+  \[
+  x_{k+1} = x_k - \left( \nabla^2 f(x_k) \right)^{-1} \nabla f(x_k).
+  \]
+
+  \item \textbf{Conjugate Gradient Method:} This is suitable for large-scale problems where the Hessian is not explicitly available. It iteratively solves a sequence of linear systems and is effective for quadratic objective functions.
+
+  \item \textbf{Quasi-Newton Methods:} These methods, such as BFGS, approximate the inverse Hessian matrix and update it iteratively, combining benefits of both gradient descent and Newton’s method.
+
+  \item \textbf{Subgradient Methods:} For nonsmooth convex functions, subgradient methods can be used, where the update rule is:
+  \[
+  x_{k+1} = x_k - \alpha_k g_k,
+  \]
+  where \( g_k \) is a subgradient of \( f \) at \( x_k \).
+\end{itemize}
+
+\subsection{How to solve a constrained convex optimization problem?}
+
+To solve a constrained convex optimization problem, you need to minimize a convex objective function \( f(x) \) subject to convex constraints. The problem can be formulated as:
+
+\begin{align*}
+\text{minimize } & f(x) \\
+\text{subject to } & x \in \mathcal{C},
+\end{align*}
+
+where \( \mathcal{C} \) is a convex set. Common methods to solve this type of problem include:
+
+\begin{itemize}
+  \item \textbf{Projected Gradient Descent:} This method involves iteratively applying gradient descent followed by projection onto the feasible set \( \mathcal{C} \). The update rule is:
+  \[
+  x_{k+1} = P_{\mathcal{C}}\left(x_k - \alpha_k \nabla f(x_k)\right),
+  \]
+  where \( P_{\mathcal{C}} \) denotes the projection operator onto the set \( \mathcal{C} \).
+
+  \item \textbf{Lagrange Duality:} Introduce Lagrange multipliers for the constraints and solve the Lagrangian dual problem. The Lagrangian is:
+  \[
+  \mathcal{L}(x, \lambda) = f(x) + \lambda^T (h(x) - b),
+  \]
+  where \( h(x) \) represents the constraint functions and \( \lambda \) are the Lagrange multipliers. Solve the dual problem to find the optimal multipliers and use them to obtain the solution to the primal problem.
+
+  \item \textbf{Interior-Point Methods:} These methods solve constrained problems by transforming them into a series of unconstrained problems. They iteratively update the solution while maintaining feasibility with respect to the constraints.
+
+  \item \textbf{Penalty Methods:} Convert the constrained problem into an unconstrained problem by adding a penalty term for constraint violations. The modified objective function is:
+  \[
+  f(x) + \rho \sum_{i} \max(0, g_i(x))^2,
+  \]
+  where \( g_i(x) \leq 0 \) are the inequality constraints and \( \rho \) is a penalty parameter.
+
+  \item \textbf{Augmented Lagrangian Methods:} Combine ideas from Lagrange multipliers and penalty methods. The augmented Lagrangian function is:
+  \[
+  \mathcal{L}_\rho(x, \lambda) = f(x) + \lambda^T (h(x) - b) + \frac{\rho}{2} \|h(x) - b\|^2,
+  \]
+  where \( \rho \) is a penalty parameter and \( \lambda \) are the multipliers.
+\end{itemize}
+
+
+\subsection{Would gradient descent converge if it is used to solve a non-convex optimization
+problem?}
+
+Gradient descent can be used to solve non-convex optimization problems, but its convergence properties are different from those in the convex case. Here are key points to consider:
+
+\begin{itemize}
+  \item \textbf{Local Minima:} In non-convex optimization, gradient descent may converge to a local minimum rather than the global minimum. The final solution depends on the initial starting point and the nature of the objective function.
+
+  \item \textbf{Saddle Points:} Gradient descent can also get stuck at saddle points, where the gradient is zero but the point is neither a local minimum nor a maximum.
+
+  \item \textbf{Convergence Guarantees:} There are no general guarantees of convergence to a global minimum in non-convex problems. Convergence is usually to a local minimum or a stationary point, depending on the problem and algorithm specifics.
+
+  \item \textbf{Choice of Step Size:} The choice of step size (learning rate) is crucial. A step size that is too large can lead to divergence or oscillations, while a step size that is too small can result in slow convergence.
+
+  \item \textbf{Stochastic Gradient Descent (SGD):} In practice, techniques like stochastic gradient descent (SGD) and its variants (e.g., Adam, RMSprop) are often used. These methods can help escape local minima and saddle points by adding noise to the gradient updates.
+
+  \item \textbf{Initialization and Restarts:} Multiple restarts with different initial points can increase the likelihood of finding a better local minimum. Proper initialization can also help avoid poor local minima.
+
+  \item \textbf{Convexity Assumptions:} For guaranteed convergence to a global minimum, the objective function should be convex. In the absence of convexity, additional techniques and heuristics are required to handle the complexities of non-convex landscapes.
+\end{itemize}
+
+
+\subsection{What loss functions will form convex functions?}
+
+A loss function \( L(y, \hat{y}) \) is convex in its parameters \( \theta \) if for all possible parameter values \( \theta_1 \) and \( \theta_2 \) and for any \( \lambda \in [0, 1] \), the following inequality holds:
+
+\[
+L(\lambda \theta_1 + (1 - \lambda) \theta_2) \leq \lambda L(\theta_1) + (1 - \lambda) L(\theta_2).
+\]
+
+Here are some commonly used convex loss functions:
+
+\begin{itemize}
+  \item \textbf{Squared Error Loss (Mean Squared Error, MSE):} 
+  \[
+  L(y, \hat{y}) = (y - \hat{y})^2,
+  \]
+  where \( y \) is the true value and \( \hat{y} \) is the predicted value. This loss function is convex with respect to \( \hat{y} \).
+
+  \item \textbf{Absolute Error Loss (Mean Absolute Error, MAE):}
+  \[
+  L(y, \hat{y}) = |y - \hat{y}|,
+  \]
+  where \( y \) is the true value and \( \hat{y} \) is the predicted value. This loss function is convex with respect to \( \hat{y} \), but not differentiable at \( \hat{y} = y \).
+
+  \item \textbf{Logarithmic Loss (Log Loss or Binary Cross-Entropy):}
+  \[
+  L(y, \hat{y}) = - \left[ y \log(\hat{y}) + (1 - y) \log(1 - \hat{y}) \right],
+  \]
+  where \( y \in \{0, 1\} \) is the binary label and \( \hat{y} \) is the predicted probability. This loss function is convex with respect to \( \hat{y} \) in the range \( (0, 1) \).
+
+  \item \textbf{Hinge Loss:}
+  \[
+  L(y, \hat{y}) = \max(0, 1 - y \hat{y}),
+  \]
+  where \( y \in \{-1, 1\} \) is the true label and \( \hat{y} \) is the predicted value. This loss function is convex with respect to \( \hat{y} \).
+
+  \item \textbf{Kullback-Leibler Divergence (KL Divergence):}
+  \[
+  L(P, Q) = \sum_{i} P(i) \log \frac{P(i)}{Q(i)},
+  \]
+  where \( P \) and \( Q \) are probability distributions. This loss function is convex in \( Q \) for a fixed \( P \).
+
+  \item \textbf{Huber Loss:}
+  \[
+  L(y, \hat{y}) = \begin{cases}
+  \frac{1}{2}(y - \hat{y})^2 & \text{if } |y - \hat{y}| \leq \delta, \\
+  \delta |y - \hat{y}| - \frac{1}{2}\delta^2 & \text{if } |y - \hat{y}| > \delta,
+  \end{cases}
+  \]
+  where \( \delta \) is a threshold parameter. The Huber loss is convex with respect to \( \hat{y} \) and is used to be less sensitive to outliers compared to squared error loss.
+\end{itemize}
