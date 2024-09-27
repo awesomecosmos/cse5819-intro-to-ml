@@ -86,3 +86,55 @@ $\therefore$ $\sigma$ is a properly-defined probabalistic model.
 
 \subsection{Question Three}
 \includegraphics[width=1\textwidth]{media/hw4_q3.png}
+
+From lectures, we know the log likelihood for logistic regression is given by:
+\begin{align}
+    E(w) &= \text{log} P(y|X,w) \label{eq:q3_1} \nonumber \\
+    &= \sum_{i=1}^{n} \text{log} \sigma(y_i (w^T x)) \nonumber \\
+    &= \sum_{i=1}^{n} \text{log} \Bigg(\frac{1}{1+\text{exp}(-y_i (w^T x))} \Bigg) && \text{(using $\sigma(s)=1/(1+e^{-s})$)} \nonumber \\
+    &= \sum_{i=1}^{n} -\text{log} [1+ \text{exp}(-y_i (w^T x))] && \text{(using log property $\text{log}(1/z)=-\text{log}(z)$)}
+\end{align}
+
+Now we take the derivative of Eq. \ref{eq:q3_1}:
+\begin{align}
+    \nabla_w E(w) &= \frac{\partial}{\partial w} \Bigg(\sum_{i=1}^{n} -\text{log} [1+ \text{exp}(-y_i (w^T x))] \Bigg) \label{eq:q3_2}
+\end{align}
+
+Eq. \ref{eq:q3_2} is a composite function, and therefore we must take its derivate step-by-step. Let's start by listing the composite function and its derivatives.
+
+\begin{align}
+    \frac{\partial}{\partial x} \text{log}(x) &= \frac{1}{x} \label{eq:q3_3}
+\end{align}
+
+\begin{align}
+    \frac{\partial}{\partial x} e^x &= e^x \label{eq:q3_4}
+\end{align}
+
+\begin{align}
+    \frac{\partial}{\partial w} y_i (w^T x) &= y_i x_i \label{eq:q3_5}
+\end{align}
+
+\begin{align}
+    \Rightarrow \frac{\partial f \cdot g}{\partial w} &= \frac{d f}{d x} \cdot \frac{d g}{d w} \label{eq:q3_6}
+\end{align}
+
+Then if we take the inner sum part of Eq. \ref{eq:q3_2} and take its derivative as a composite function in the form of Eq. \ref{eq:q3_6}, and if we let $z=y_i (w^T x)$ for simplicity, then we have:
+
+\begin{align}
+    \nabla_w e(w) &= \frac{d f}{d x} \Bigg(-\text{log} (1+e^z) \Bigg) \cdot  \frac{d g}{d w} \Bigg(-y_i (w^T x) \Bigg) \label{eq:q3_7} \nonumber \\
+    &= \Bigg(\frac{-1}{1+e^{-z}} \cdot e^{-z} \Bigg) \cdot \Bigg(-y_i x_i \Bigg) \nonumber \\
+    &= \frac{e^{-z}}{1+e^{-z}} \cdot  y_i x_i
+\end{align}
+
+From HW1, we know $\frac{e^{-s}}{1+e^{-s}}=1-\sigma(s)$:
+\begin{align}
+    \nabla_w e(w) &= (1-\sigma(z)) \cdot  y_i x_i \label{eq:q3_8} \nonumber \\
+    &= [1-\sigma(y_i (w^T x))] \cdot  y_i x_i
+\end{align}
+
+Finally substituting the single sum back into the full summation in Eq. \ref{eq:q3_2}, we have:
+\begin{align}
+    \nabla_w E(w) &= \sum_{i=1}^{n} [1-\sigma(y_i (w^T x))] \cdot  y_i x_i \label{eq:q3_9} 
+\end{align}
+
+$\therefore$ Hence proven.
