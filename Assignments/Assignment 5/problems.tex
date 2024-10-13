@@ -1,0 +1,26 @@
+\section{Problems}
+
+\subsection{Question One}
+
+The following shows a history of customers with their incomes, age groups, and an attribute called Have\_iPhone indicating whether they have an iPhone. We also indicate whether they will buy an iPad or not in the last column. We want to use Naive Bayes to predict whether a new customer will buy an iPad or not. Consider a new young customer whose income is medium and who has an iPhone. Please predict whether this new customer will buy an iPad.
+
+\includegraphics[width=1\textwidth]{media/hw5_q1.png}
+
+So for our first step of gradient descent, we have:
+\begin{align}
+    w &= w_0 = 13 \label{eq:q1_2} \nonumber \\
+    w_1 &= w - \alpha \nabla_w f(w) \nonumber \\
+    &= 13 - \frac{1}{40} \cdot 20(13-11)^3 \nonumber \\
+    &= 9
+\end{align}
+
+\subsection{Question Two}
+You have been asked to develop a classification model for diagnosing whether a patient is infected with a certain disease. To help you construct the models, your collaborator has provided you with a small training set (N=10 individuals) with equal number of positive and negative examples. You tried several approaches and found two most promising models, C1 and C2. The outputs of the models in terms of predicting whether each of the training examples belong to the “positive(+)” class are summarized in the table below. The first row shows the probability a training example belongs to the positive class according to the classifier C1, while the second row shows the same information for classifier C2. The last row indicates the true class labels of the 10 training examples.
+
+\includegraphics[width=1\textwidth]{media/hw5_q2.png}
+
+For each model, we will evaluate different thresholds within the range of [0,1], and a sample with probability P(y=+ | C1) (or P(y=+ | C2)) that is lower than this threshold will be estimated as -, or + if greater than this threshold. By varying the thresholds (referred to the lecture slide on ROC), you can study the model performance and draw the ROC. (you can either use code or hand-calculating, but if you use code, you need to show the calculation process.)
+
+\textbf{a. Draw the corresponding ROC curves for each classifier on the same plot.}
+
+\textbf{b. Which classifier can be considered better? Why?}

@@ -1,0 +1,448 @@
+\section{Part 1: ChatGPT Self-Learning (20pts)}
+
+You can start from the following prompts, but you need to create subsequent questions that attempt to understand the basic concepts of machine learning.
+
+\subsection{What is Bayes' theorem?}
+
+Bayes' theorem is a fundamental result in probability theory that describes how to update the probability of a hypothesis based on new evidence. It is given by the formula:
+
+\[
+P(H|E) = \frac{P(E|H) \cdot P(H)}{P(E)}
+\]
+
+where:
+\begin{itemize}
+    \item \(P(H|E)\) is the posterior probability, the probability of the hypothesis \(H\) given the evidence \(E\).
+    \item \(P(E|H)\) is the likelihood, the probability of the evidence given that the hypothesis is true.
+    \item \(P(H)\) is the prior probability, the initial probability of the hypothesis before seeing the evidence.
+    \item \(P(E)\) is the marginal likelihood or evidence, the total probability of observing the evidence.
+\end{itemize}
+
+
+\subsection{What is naive Bayes?}
+
+Naive Bayes is a classification algorithm based on Bayes' theorem, with the assumption that the features are conditionally independent given the class label. The formula for the probability of a class \( C_k \) given a feature vector \( \mathbf{x} = (x_1, x_2, \dots, x_n) \) is:
+
+\[
+P(C_k | \mathbf{x}) = \frac{P(C_k) \prod_{i=1}^{n} P(x_i | C_k)}{P(\mathbf{x})}
+\]
+
+Where:
+\begin{itemize}
+    \item \( P(C_k | \mathbf{x}) \) is the posterior probability of class \( C_k \) given the features.
+    \item \( P(C_k) \) is the prior probability of class \( C_k \).
+    \item \( P(x_i | C_k) \) is the likelihood of feature \( x_i \) given class \( C_k \).
+    \item \( P(\mathbf{x}) \) is the marginal likelihood or evidence, the probability of the features.
+\end{itemize}
+
+The "naive" assumption is that the features \( x_i \) are independent of each other, which simplifies the computation of the joint probability.
+
+
+\subsection{Can you provide an example of naïve Bayes?}
+
+An example of a Naive Bayes classifier can be illustrated with a simple text classification task, such as spam detection. Suppose we want to classify emails as either "spam" or "not spam" based on the presence of certain words.
+
+Let's assume we have the following training data:
+
+\begin{itemize}
+    \item \textbf{Spam Emails:} 
+    \begin{itemize}
+        \item "Free money now"
+        \item "Exclusive offer just for you"
+    \end{itemize}
+    \item \textbf{Not Spam Emails:} 
+    \begin{itemize}
+        \item "Meeting at 10 AM"
+        \item "Project deadline next week"
+    \end{itemize}
+\end{itemize}
+
+From this training data, we can calculate the prior probabilities:
+\[
+P(\text{Spam}) = \frac{2}{4} = 0.5 \quad \text{and} \quad P(\text{Not Spam}) = \frac{2}{4} = 0.5
+\]
+
+Next, we identify the features (words) and calculate their likelihoods. For example:
+\begin{itemize}
+    \item \( P(\text{"money"} | \text{Spam}) = \frac{1}{2} \)
+    \item \( P(\text{"money"} | \text{Not Spam}) = 0 \)
+    \item \( P(\text{"meeting"} | \text{Spam}) = 0 \)
+    \item \( P(\text{"meeting"} | \text{Not Spam}) = \frac{1}{2} \)
+\end{itemize}
+
+Now, suppose we receive a new email: "Get your free money now." We want to classify it as either spam or not spam.
+
+Using Bayes' theorem, we compute:
+\[
+P(\text{Spam} | \text{"Get your free money now"}) \propto P(\text{Spam}) \cdot P(\text{"Get"} | \text{Spam}) \cdot P(\text{"your"} | \text{Spam}) \cdot P(\text{"free"} | \text{Spam}) \cdot P(\text{"money"} | \text{Spam}) \cdot P(\text{"now"} | \text{Spam})
+\]
+Assuming that the other words in the email have a probability of \(1\) when the email is spam, we can simplify to:
+\[
+P(\text{Spam} | \text{"Get your free money now"}) \propto 0.5 \cdot 1 \cdot 1 \cdot 1 \cdot \frac{1}{2} \cdot 1 = 0.25
+\]
+
+Similarly, we compute:
+\[
+P(\text{Not Spam} | \text{"Get your free money now"}) \propto P(\text{Not Spam}) \cdot P(\text{"Get"} | \text{Not Spam}) \cdot P(\text{"your"} | \text{Not Spam}) \cdot P(\text{"free"} | \text{Not Spam}) \cdot P(\text{"money"} | \text{Not Spam}) \cdot P(\text{"now"} | \text{Not Spam})
+\]
+\[
+P(\text{Not Spam} | \text{"Get your free money now"}) \propto 0.5 \cdot 1 \cdot 1 \cdot 1 \cdot 0 \cdot 1 = 0
+\]
+
+Since \( P(\text{Spam} | \text{"Get your free money now"}) > P(\text{Not Spam} | \text{"Get your free money now"}) \), we classify the email as spam.
+
+
+\subsection{How to run k-nearest neighbor classifier?}
+
+To run a k-nearest neighbor (KNN) classifier, follow these steps:
+
+\begin{enumerate}
+    \item \textbf{Import Required Libraries:}
+    You will need libraries for data manipulation, model training, and evaluation. Common libraries include NumPy, Pandas, and scikit-learn.
+
+    \begin{verbatim}
+    import numpy as np
+    import pandas as pd
+    from sklearn.model_selection import train_test_split
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.metrics import accuracy_score, confusion_matrix
+    \end{verbatim}
+
+    \item \textbf{Load the Dataset:}
+    Load your dataset into a Pandas DataFrame. For example, using the Iris dataset:
+
+    \begin{verbatim}
+    data = pd.read_csv('iris.csv')  % Load the dataset
+    \end{verbatim}
+
+    \item \textbf{Preprocess the Data:}
+    Split the dataset into features and target variables, and then divide it into training and testing sets.
+
+    \begin{verbatim}
+    X = data.drop('species', axis=1)  % Features
+    y = data['species']                % Target variable
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    \end{verbatim}
+
+    \item \textbf{Create the KNN Classifier:}
+    Initialize the KNN classifier with a specified value for \(k\), which represents the number of nearest neighbors to consider.
+
+    \begin{verbatim}
+    k = 3
+    knn = KNeighborsClassifier(n_neighbors=k)
+    \end{verbatim}
+
+    \item \textbf{Train the Model:}
+    Fit the KNN classifier to the training data.
+
+    \begin{verbatim}
+    knn.fit(X_train, y_train)
+    \end{verbatim}
+
+    \item \textbf{Make Predictions:}
+    Use the trained model to make predictions on the test set.
+
+    \begin{verbatim}
+    y_pred = knn.predict(X_test)
+    \end{verbatim}
+
+    \item \textbf{Evaluate the Model:}
+    Assess the performance of the classifier using metrics like accuracy and confusion matrix.
+
+    \begin{verbatim}
+    accuracy = accuracy_score(y_test, y_pred)
+    confusion = confusion_matrix(y_test, y_pred)
+
+    print('Accuracy:', accuracy)
+    print('Confusion Matrix:\n', confusion)
+    \end{verbatim}
+\end{enumerate}
+
+
+\subsection{How to run k-nearest neighbor regression?}
+
+To run a k-nearest neighbor (KNN) regression, follow these steps:
+
+\begin{enumerate}
+    \item \textbf{Import Required Libraries:}
+    Import necessary libraries for data handling, model training, and evaluation. Commonly used libraries include NumPy, Pandas, and scikit-learn.
+
+    \begin{verbatim}
+    import numpy as np
+    import pandas as pd
+    from sklearn.model_selection import train_test_split
+    from sklearn.neighbors import KNeighborsRegressor
+    from sklearn.metrics import mean_squared_error, r2_score
+    \end{verbatim}
+
+    \item \textbf{Load the Dataset:}
+    Load your dataset into a Pandas DataFrame. For example, you could use a dataset like the Boston housing dataset.
+
+    \begin{verbatim}
+    data = pd.read_csv('boston_housing.csv')  % Load the dataset
+    \end{verbatim}
+
+    \item \textbf{Preprocess the Data:}
+    Split the dataset into features and target variables, and then divide it into training and testing sets.
+
+    \begin{verbatim}
+    X = data.drop('MEDV', axis=1)  % Features
+    y = data['MEDV']                % Target variable
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    \end{verbatim}
+
+    \item \textbf{Create the KNN Regressor:}
+    Initialize the KNN regressor with a specified value for \(k\), which represents the number of nearest neighbors to consider.
+
+    \begin{verbatim}
+    k = 3
+    knn_regressor = KNeighborsRegressor(n_neighbors=k)
+    \end{verbatim}
+
+    \item \textbf{Train the Model:}
+    Fit the KNN regressor to the training data.
+
+    \begin{verbatim}
+    knn_regressor.fit(X_train, y_train)
+    \end{verbatim}
+
+    \item \textbf{Make Predictions:}
+    Use the trained model to make predictions on the test set.
+
+    \begin{verbatim}
+    y_pred = knn_regressor.predict(X_test)
+    \end{verbatim}
+
+    \item \textbf{Evaluate the Model:}
+    Assess the performance of the regressor using metrics like mean squared error (MSE) and \(R^2\) score.
+
+    \begin{verbatim}
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+
+    print('Mean Squared Error:', mse)
+    print('R^2 Score:', r2)
+    \end{verbatim}
+\end{enumerate}
+
+
+\subsection{How to choose appropriate value for k in k-nearest neighbor classifier?}
+
+Choosing the appropriate value for \( k \) in a k-nearest neighbor (KNN) classifier is crucial for model performance. Here are some common methods to determine the best \( k \):
+
+\begin{enumerate}
+    \item \textbf{Domain Knowledge:} If you have prior knowledge about the dataset, it can provide insights into an appropriate \( k \) value based on the problem context.
+
+    \item \textbf{Cross-Validation:} Use cross-validation to evaluate model performance for different values of \( k \). The process involves:
+    \begin{itemize}
+        \item Splitting the dataset into \( k \) subsets (folds).
+        \item Training the model on \( k-1 \) folds and testing it on the remaining fold.
+        \item Repeating this process for each fold and averaging the performance metrics (e.g., accuracy).
+    \end{itemize}
+
+    \item \textbf{Odd vs. Even Values:} For binary classification problems, choose an odd value of \( k \) to avoid ties in voting. For multiclass problems, either odd or even values can be considered.
+
+    \item \textbf{Error Rate Analysis:} Plot the error rate for different \( k \) values. 
+    \begin{itemize}
+        \item Start with \( k = 1 \) and incrementally increase \( k \) to observe the trend.
+        \item Look for a point where increasing \( k \) no longer significantly decreases the error rate. This can indicate a good balance between bias and variance.
+    \end{itemize}
+
+    \item \textbf{Grid Search:} Utilize a grid search approach to systematically evaluate a range of \( k \) values along with other hyperparameters. This method is often coupled with cross-validation for better reliability.
+
+    \item \textbf{Considerations for Large Datasets:} For larger datasets, smaller values of \( k \) might be preferred as they allow the model to capture local patterns. However, for noisy datasets, larger \( k \) values can help to smooth out the noise.
+\end{enumerate}
+
+In summary, the optimal \( k \) value is typically found through experimentation and evaluation, balancing the trade-off between model complexity and generalization.
+
+
+\subsection{How to evaluate a supervised machine learning model?}
+
+Evaluating a supervised machine learning model is crucial to understand its performance and generalization ability. Here are common steps and metrics used for evaluation:
+
+\begin{enumerate}
+    \item \textbf{Split the Dataset:}
+    Divide the dataset into training and testing sets, typically using an 80/20 or 70/30 split. Optionally, create a validation set for hyperparameter tuning.
+
+    \item \textbf{Cross-Validation:}
+    Implement k-fold cross-validation to ensure that the model's performance is stable across different subsets of the data. In k-fold cross-validation:
+    \begin{itemize}
+        \item The dataset is divided into \( k \) folds.
+        \item The model is trained \( k \) times, each time using \( k-1 \) folds for training and 1 fold for validation.
+        \item The average performance across all folds is calculated.
+    \end{itemize}
+
+    \item \textbf{Performance Metrics:}
+    Depending on the type of supervised learning problem (classification or regression), use appropriate metrics:
+
+    \begin{itemize}
+        \item \textbf{For Classification:}
+        \begin{itemize}
+            \item \textbf{Accuracy:} 
+            \[
+            \text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Predictions}}
+            \]
+            \item \textbf{Precision:} 
+            \[
+            \text{Precision} = \frac{TP}{TP + FP}
+            \]
+            \item \textbf{Recall (Sensitivity):} 
+            \[
+            \text{Recall} = \frac{TP}{TP + FN}
+            \]
+            \item \textbf{F1 Score:} 
+            \[
+            \text{F1 Score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+            \]
+            \item \textbf{Confusion Matrix:} A matrix that summarizes true positives (TP), true negatives (TN), false positives (FP), and false negatives (FN).
+        \end{itemize}
+
+        \item \textbf{For Regression:}
+        \begin{itemize}
+            \item \textbf{Mean Absolute Error (MAE):} 
+            \[
+            \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+            \]
+            \item \textbf{Mean Squared Error (MSE):} 
+            \[
+            \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+            \]
+            \item \textbf{Root Mean Squared Error (RMSE):} 
+            \[
+            \text{RMSE} = \sqrt{\text{MSE}}
+            \]
+            \item \textbf{R-squared (\(R^2\)):} A measure of how well the independent variables explain the variability of the dependent variable.
+            \[
+            R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}}
+            \]
+            where \(\text{SS}_{\text{res}}\) is the sum of squares of residuals and \(\text{SS}_{\text{tot}}\) is the total sum of squares.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Visualizations:}
+    Utilize visualizations such as:
+    \begin{itemize}
+        \item ROC curves for binary classification, plotting true positive rate against false positive rate.
+        \item Precision-Recall curves to evaluate the trade-off between precision and recall.
+        \item Residual plots to analyze the difference between actual and predicted values in regression tasks.
+    \end{itemize}
+
+    \item \textbf{Interpretability:}
+    Assess the model's interpretability using techniques such as feature importance scores, SHAP values, or LIME, to understand which features most influence predictions.
+
+    \item \textbf{Model Comparison:}
+    Compare the performance of different models using the metrics calculated above to determine which model performs best for the given task.
+
+    \item \textbf{Hyperparameter Tuning:}
+    Use techniques such as grid search or random search with cross-validation to optimize hyperparameters and improve model performance.
+\end{enumerate}
+
+
+\subsection{What are common metrics used to evaluate a regression model?}
+
+Common metrics used to evaluate a regression model include the following:
+
+\begin{enumerate}
+    \item \textbf{Mean Absolute Error (MAE):} 
+    This metric measures the average absolute difference between the predicted values and the actual values. It is expressed as:
+    \[
+    \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+    \]
+    where \(y_i\) is the actual value, \(\hat{y}_i\) is the predicted value, and \(n\) is the number of observations.
+
+    \item \textbf{Mean Squared Error (MSE):} 
+    This metric measures the average of the squared differences between the predicted and actual values. It penalizes larger errors more than smaller ones and is expressed as:
+    \[
+    \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+    \]
+
+    \item \textbf{Root Mean Squared Error (RMSE):} 
+    This is the square root of the MSE and provides error metrics in the same units as the target variable, making it easier to interpret:
+    \[
+    \text{RMSE} = \sqrt{\text{MSE}}
+    \]
+
+    \item \textbf{R-squared (\(R^2\)):} 
+    This metric indicates the proportion of the variance in the dependent variable that is predictable from the independent variables. It is calculated as:
+    \[
+    R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}}
+    \]
+    where \(\text{SS}_{\text{res}}\) is the sum of squares of residuals, and \(\text{SS}_{\text{tot}}\) is the total sum of squares.
+
+    \item \textbf{Adjusted R-squared:} 
+    This metric adjusts the \(R^2\) value for the number of predictors in the model, providing a more accurate measure when comparing models with different numbers of predictors.
+
+    \item \textbf{Mean Absolute Percentage Error (MAPE):} 
+    This metric expresses the error as a percentage of the actual values, making it useful for understanding error in relative terms:
+    \[
+    \text{MAPE} = \frac{100}{n} \sum_{i=1}^{n} \left|\frac{y_i - \hat{y}_i}{y_i}\right|
+    \]
+
+    \item \textbf{Explained Variance Score:} 
+    This metric measures the proportion of variance explained by the model. A higher score indicates better model performance.
+
+    \item \textbf{Quantile Loss:} 
+    This metric is particularly useful for quantile regression, measuring how well the model predicts specific quantiles of the target variable.
+\end{enumerate}
+
+
+\subsection{What are common metrics used to evaluate a classifier?}
+
+Common metrics used to evaluate a classifier include the following:
+
+\begin{enumerate}
+    \item \textbf{Accuracy:} 
+    This metric measures the proportion of correctly classified instances out of the total instances. It is calculated as:
+    \[
+    \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+    \]
+    where \(TP\) is true positives, \(TN\) is true negatives, \(FP\) is false positives, and \(FN\) is false negatives.
+
+    \item \textbf{Precision:} 
+    Precision measures the proportion of true positive predictions among all positive predictions made. It is calculated as:
+    \[
+    \text{Precision} = \frac{TP}{TP + FP}
+    \]
+
+    \item \textbf{Recall (Sensitivity or True Positive Rate):} 
+    Recall measures the proportion of true positives identified out of all actual positive instances. It is calculated as:
+    \[
+    \text{Recall} = \frac{TP}{TP + FN}
+    \]
+
+    \item \textbf{F1 Score:} 
+    The F1 Score is the harmonic mean of precision and recall, providing a single score that balances both metrics. It is calculated as:
+    \[
+    \text{F1 Score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+    \]
+
+    \item \textbf{Receiver Operating Characteristic (ROC) Curve:} 
+    The ROC curve is a graphical representation of the true positive rate against the false positive rate at various threshold settings. It helps visualize the trade-off between sensitivity and specificity.
+
+    \item \textbf{Area Under the ROC Curve (AUC-ROC):} 
+    AUC measures the area under the ROC curve. A value of 1 indicates perfect classification, while a value of 0.5 suggests no discriminative ability.
+
+    \item \textbf{Confusion Matrix:} 
+    The confusion matrix provides a detailed breakdown of the classifier's performance, showing true positives, true negatives, false positives, and false negatives.
+
+    \item \textbf{Specificity (True Negative Rate):} 
+    Specificity measures the proportion of true negatives identified out of all actual negative instances. It is calculated as:
+    \[
+    \text{Specificity} = \frac{TN}{TN + FP}
+    \]
+
+    \item \textbf{Logarithmic Loss (Log Loss):} 
+    Log loss measures the performance of a classifier by penalizing incorrect classifications based on the predicted probability. It is defined as:
+    \[
+    \text{Log Loss} = -\frac{1}{n} \sum_{i=1}^{n} [y_i \log(p_i) + (1 - y_i) \log(1 - p_i)]
+    \]
+    where \(y_i\) is the true label and \(p_i\) is the predicted probability.
+
+    \item \textbf{Matthews Correlation Coefficient (MCC):} 
+    The MCC is a balanced measure that takes into account all four confusion matrix categories (TP, TN, FP, FN). It is calculated as:
+    \[
+    \text{MCC} = \frac{TP \cdot TN - FP \cdot FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}
+    \]
+\end{enumerate}
