@@ -73,3 +73,15 @@ I wrote some code to do this, the code is included in the Jupyter notebook. Here
 
 
 \textbf{b. Which classifier can be considered better? Why?}
+
+To determine which classifier is better, we can calculate the Area Under the Curve (AUC). We can just read off the graphs in this case.
+
+For Classifier \#1:
+\begin{align}
+    \text{AUC}_1 &= (0.2\times 0.2) +(0.6\times 0.2) + (0.8\times 0.4) + (1\times 0.2) \nonumber \\
+    &= 0.68 \nonumber \\
+    \text{AUC}_2 &= (0.8\times 0.4) +(1\times 0.6) \nonumber \\
+    &= 0.92
+\end{align}
+
+Since $\text{AUC}_1 < \text{AUC}_2$, we can consider Classifier \#2 to be better. Additionally, $\text{AUC}_2 = 0.92$, which is much closer to the ideal $\text{AUC} = 1.0$, indicating Classfier \#2 is able to distinguish very well between the positive and negative classes.
