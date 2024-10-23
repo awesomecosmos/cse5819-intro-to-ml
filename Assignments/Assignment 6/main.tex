@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}   % Defines equations
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+    top=20mm,
+}
+\usepackage{graphicx}
+\usepackage{titling}
+
+\title{CSE 5819 Assignment \#6}
+\author{Aayushi Verma}
+\date{due 10/28/24}
+
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{%  the preset of fancyhdr 
+    \fancyhf{} % Clear all header and footer fields
+    \fancyfoot[L]{\thedate}
+    \fancyhead[L]{CSE 5819 Assignment \#6}
+    \fancyhead[R]{\theauthor}
+}
+\makeatletter
+\def\@maketitle{%
+    \newpage
+    \null
+    \vskip 1em%
+    \begin{center}%
+    \let \footnote \thanks
+        {\LARGE \@title \par}%
+        \vskip 1em%
+        %{\large \@date}%
+    \end{center}%
+    \par
+    \vskip 1em}
+\makeatother
+
+\newcommand{\circledtext}[1]{%
+  \tikz[baseline=(char.base)] \node[shape=circle, draw=blue, inner sep=1pt, font=\sffamily, text=blue] (char) {#1};%
+}
+
+\usepackage{lipsum}  
+\usepackage{cmbright}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+    by: Aayushi Verma (uef24001)
+\end{center}
+
+This assignment is organized as follows:
+
+\begin{enumerate}
+    \item ChatGPT - pg 2--5%\pageref{chatgpt_end}
+    \item Problems - pg 6--10%\pageref{problems_end}
+    \item Coding - attached as a separate .ipynb file
+\end{enumerate}
+
+% Mark the start of the ChatGPT section
+\label{chatgpt_start}
+\include{chatgpt} 
+\label{chatgpt_end}
+
+% Mark the start of the Problems section
+\label{problems_start}
+\include{problems}  
+\label{problems_end}
+
+\end{document}

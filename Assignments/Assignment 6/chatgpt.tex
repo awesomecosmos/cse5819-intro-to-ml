@@ -1,0 +1,180 @@
+\section{Part 1: ChatGPT Self-Learning (20pts)}
+
+You can start from the following prompts, but you need to create subsequent questions that attempt to understand the basic concepts of machine learning.
+
+\subsection{What is the most used evaluation metric for classification?}
+
+The most commonly used evaluation metrics for classification include:
+\begin{itemize}
+    \item \textbf{Accuracy}: The ratio of correctly predicted instances to the total instances.
+    \item \textbf{Precision}: The ratio of true positive predictions to the sum of true and false positives.
+    \item \textbf{Recall}: The ratio of true positive predictions to the sum of true positives and false negatives.
+    \item \textbf{F1-score}: The harmonic mean of precision and recall, providing a balance between the two.
+    \item \textbf{ROC-AUC}: The Area Under the Receiver Operating Characteristic Curve, measuring the trade-off between true positive rate and false positive rate.
+\end{itemize}
+
+
+\subsection{What is the most used evaluation metric for regression?}
+
+The most commonly used evaluation metrics for regression include:
+\begin{itemize}
+    \item \textbf{Mean Squared Error (MSE)}: The average of the squared differences between predicted and actual values.
+    \item \textbf{Root Mean Squared Error (RMSE)}: The square root of the MSE, providing an interpretable error metric in the same units as the target variable.
+    \item \textbf{Mean Absolute Error (MAE)}: The average of the absolute differences between predicted and actual values.
+    \item \textbf{R-squared (Coefficient of Determination)}: A statistical measure indicating how well the regression predictions approximate the real data points.
+    \item \textbf{Mean Absolute Percentage Error (MAPE)}: The average percentage difference between predicted and actual values.
+\end{itemize}
+
+
+\subsection{For supervised learning algorithms, what would be a reliable procedure of evaluating their performance?}
+
+A reliable procedure for evaluating the performance of supervised learning algorithms includes the following steps:
+\begin{itemize}
+    \item \textbf{Train-Test Split}: Divide the dataset into two parts: a training set (used for model training) and a test set (used for final performance evaluation). A common split ratio is 80\% training and 20\% testing.
+    \item \textbf{Cross-Validation}: Perform $k$-fold cross-validation (e.g., $k=5$ or $k=10$), where the dataset is split into $k$ subsets. The model is trained on $k-1$ subsets and tested on the remaining one. This process is repeated $k$ times, and the results are averaged.
+    \item \textbf{Evaluation Metrics}: Select appropriate evaluation metrics based on the type of task (e.g., accuracy, precision, recall, F1-score, ROC-AUC for classification, and MSE, MAE, R-squared for regression).
+    \item \textbf{Hyperparameter Tuning}: Use techniques such as grid search or random search with cross-validation to fine-tune the model's hyperparameters for optimal performance.
+    \item \textbf{Handling Class Imbalance}: If dealing with imbalanced datasets, use techniques like stratified sampling in cross-validation, resampling methods (oversampling/undersampling), or adjust performance metrics (e.g., weighted F1-score).
+    \item \textbf{Test Set Evaluation}: After training and tuning the model, evaluate its performance on the previously unseen test set to get an unbiased estimate of its real-world performance.
+\end{itemize}
+
+
+\subsection{Study bagging (bootstrapping aggregation)?}
+
+Bagging, or Bootstrap Aggregating, is an ensemble learning technique that improves the stability and accuracy of machine learning algorithms. The main ideas behind bagging are:
+
+\begin{itemize}
+    \item \textbf{Bootstrapping}: Create multiple subsets of the training data by randomly sampling with replacement. Each subset has the same size as the original dataset but may include duplicate instances while omitting others.
+    \item \textbf{Model Training}: Train a separate model on each of these bootstrapped subsets. The models can be of the same type (e.g., decision trees) or different types.
+    \item \textbf{Aggregation}: Combine the predictions of all the models to produce a final output. For regression tasks, the average of the predictions is taken, while for classification tasks, a majority vote is used to determine the final class label.
+    \item \textbf{Reduction of Variance}: By averaging the predictions of multiple models, bagging reduces overfitting and variance, leading to more robust and generalizable predictions.
+    \item \textbf{Popular Algorithms}: One of the most well-known implementations of bagging is the Random Forest algorithm, which combines multiple decision trees trained on bootstrapped subsets of the data.
+\end{itemize}
+
+
+\subsection{Why can the bagging procedure create models of lower variance?}
+
+The bagging procedure can create models of lower variance due to several key factors:
+
+\begin{itemize}
+    \item \textbf{Ensemble of Models}: Bagging combines multiple models trained on different subsets of the data. Each model captures different patterns and noise in the data, which helps to smooth out individual model fluctuations.
+    \item \textbf{Random Sampling with Replacement}: The bootstrapping process involves sampling with replacement, meaning some data points may be duplicated while others may be omitted. This results in different training sets for each model, leading to diverse models that are less likely to make the same errors.
+    \item \textbf{Reduction of Overfitting}: Individual models, especially complex ones like decision trees, can overfit to the training data by capturing noise. By averaging the predictions of multiple models, bagging reduces the influence of any one model that may have overfitted, thereby decreasing overall model variance.
+    \item \textbf{Majority Voting (Classification) or Averaging (Regression)}: The aggregation step in bagging helps to average out the predictions, which reduces the impact of outliers and erratic predictions from individual models. This averaging effect leads to more stable and consistent final predictions.
+    \item \textbf{Increased Robustness}: By leveraging the strengths of multiple models, bagging can improve generalization performance, making the ensemble more robust to variations in the data compared to single models.
+\end{itemize}
+
+
+\subsection{What are the advantages of Support Vector Machine?}
+
+Support Vector Machines (SVM) offer several advantages, making them popular for various classification and regression tasks:
+
+\begin{itemize}
+    \item \textbf{Effective in High-Dimensional Spaces}: SVMs are particularly effective in high-dimensional spaces, making them suitable for tasks involving large feature sets, such as text classification and image recognition.
+    \item \textbf{Robust to Overfitting}: By maximizing the margin between classes, SVMs are less prone to overfitting, especially in high-dimensional datasets. The regularization parameter can further help control the trade-off between maximizing the margin and minimizing classification errors.
+    \item \textbf{Versatile Kernel Trick}: SVMs can employ various kernel functions (e.g., linear, polynomial, radial basis function) to handle non-linear decision boundaries. This flexibility allows SVMs to adapt to complex data distributions.
+    \item \textbf{Works Well with Smaller Datasets}: SVMs can perform well with smaller datasets, as they focus on the support vectors that define the decision boundary, rather than the entire dataset.
+    \item \textbf{Clear Margin of Separation}: SVMs create a clear margin of separation between classes, which can lead to better generalization in the presence of noise in the data.
+    \item \textbf{Binary and Multi-Class Classification}: Although inherently a binary classifier, SVMs can be extended to handle multi-class classification problems using strategies like one-vs-one or one-vs-all.
+    \item \textbf{Robust to Outliers}: The decision boundary created by SVMs can be relatively unaffected by outliers, as the algorithm focuses on the support vectors that lie closest to the decision boundary.
+\end{itemize}
+
+
+\subsection{What is Support Vector Regression?}
+
+Support Vector Regression (SVR) is an extension of Support Vector Machines (SVM) that is used for regression problems. SVR aims to find a function that approximates the relationship between the input features and the continuous target variable. The key concepts of SVR include:
+
+\begin{itemize}
+    \item \textbf{Epsilon-Insensitive Loss Function}: SVR uses an epsilon-insensitive loss function, meaning that errors within a specified margin (epsilon) are not penalized. This allows the model to ignore small deviations between the predicted and actual values, providing a level of robustness to noise in the data.
+    
+    \item \textbf{Support Vectors}: Similar to SVM, SVR identifies support vectors that define the optimal regression function. Only the data points that lie outside the epsilon margin contribute to the model, focusing on the most relevant information for regression.
+
+    \item \textbf{Margin of Tolerance}: The goal of SVR is to find a function that lies within the epsilon margin of the true values, ensuring that the predictions are as accurate as possible while maintaining a level of tolerance to errors.
+
+    \item \textbf{Kernel Functions}: SVR can also utilize kernel functions, allowing it to handle non-linear relationships between the input features and the target variable. Common kernels include linear, polynomial, and radial basis function (RBF) kernels.
+
+    \item \textbf{Regularization Parameter (C)}: Similar to SVM, SVR has a regularization parameter \(C\) that controls the trade-off between achieving a low error on the training data and maintaining a smooth regression function. A smaller \(C\) results in a wider margin but allows more errors, while a larger \(C\) seeks to minimize errors at the cost of model complexity.
+
+    \item \textbf{Applications}: SVR is widely used in various fields such as finance, bioinformatics, and engineering, where predicting continuous values is essential.
+\end{itemize}
+
+
+\subsection{How many different formulations of SVM are there?}
+
+Support Vector Machines (SVM) have several formulations, each suited for different types of problems and data distributions. The main formulations include:
+
+\begin{itemize}
+    \item \textbf{Hard Margin SVM}: This formulation assumes that the data is linearly separable without any noise. It aims to maximize the margin between the two classes while ensuring that all training samples are correctly classified. This approach is not robust to outliers.
+
+    \item \textbf{Soft Margin SVM}: This formulation introduces a soft margin that allows for some misclassifications. It includes a regularization parameter \(C\) that controls the trade-off between maximizing the margin and minimizing classification errors. Soft Margin SVM is more robust to outliers and noise in the data.
+
+    \item \textbf{SVM for Regression (Support Vector Regression, SVR)}: This formulation adapts SVM for regression tasks. It aims to find a function that approximates the relationship between input features and continuous target variables, using an epsilon-insensitive loss function.
+
+    \item \textbf{Multi-class SVM}: Although SVM is inherently a binary classifier, it can be extended to multi-class problems using techniques like one-vs-one (OvO) or one-vs-all (OvA). In OvO, a separate SVM is trained for every pair of classes, while in OvA, a separate SVM is trained for each class against all other classes.
+
+    \item \textbf{Kernelized SVM}: This formulation leverages kernel functions to transform the input space, allowing SVM to find non-linear decision boundaries. Common kernels include linear, polynomial, radial basis function (RBF), and sigmoid.
+
+    \item \textbf{Nu-SVM}: This is a variant of Soft Margin SVM that uses a parameter \(\nu\) to control the number of support vectors and margin errors, providing additional flexibility in model training.
+\end{itemize}
+
+
+\subsection{How to solve an SVM optimization problem?}
+
+Solving an SVM optimization problem involves finding the optimal hyperplane that maximizes the margin between different classes. The procedure can be broken down into the following steps:
+
+\begin{itemize}
+    \item \textbf{Formulate the Optimization Problem}:
+    For a binary classification problem with \(N\) training samples \((\mathbf{x}_i, y_i)\), where \(y_i \in \{-1, 1\}\), the optimization problem can be formulated as:
+    
+    \begin{align}
+        \min_{\mathbf{w}, b} \quad & \frac{1}{2} \|\mathbf{w}\|^2 \\
+        \text{subject to} \quad & y_i (\mathbf{w} \cdot \mathbf{x}_i + b) \geq 1, \quad \forall i = 1, \ldots, N
+    \end{align}
+    
+    Here, \(\mathbf{w}\) is the weight vector, \(b\) is the bias term, and the constraints ensure that the samples are correctly classified with a margin of at least 1.
+
+    \item \textbf{Introduce Slack Variables (Soft Margin SVM)}:
+    For non-linearly separable data, introduce slack variables \(\xi_i\) to allow for misclassifications:
+    
+    \begin{align}
+        \min_{\mathbf{w}, b, \boldsymbol{\xi}} \quad & \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^{N} \xi_i \\
+        \text{subject to} \quad & y_i (\mathbf{w} \cdot \mathbf{x}_i + b) \geq 1 - \xi_i, \quad \forall i = 1, \ldots, N \\
+        & \xi_i \geq 0
+    \end{align}
+    
+    The parameter \(C\) controls the trade-off between maximizing the margin and minimizing the classification errors.
+
+    \item \textbf{Transform to the Dual Problem}:
+    The primal problem can be transformed into a dual optimization problem using Lagrange multipliers \(\alpha_i\):
+    
+    \begin{align}
+        \max_{\boldsymbol{\alpha}} \quad & \sum_{i=1}^{N} \alpha_i - \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_i \alpha_j y_i y_j \mathbf{x}_i \cdot \mathbf{x}_j \\
+        \text{subject to} \quad & \sum_{i=1}^{N} \alpha_i y_i = 0 \\
+        & 0 \leq \alpha_i \leq C, \quad \forall i = 1, \ldots, N
+    \end{align}
+
+    \item \textbf{Solve the Dual Problem}:
+    Use optimization techniques such as Sequential Minimal Optimization (SMO) or gradient descent methods to solve the dual problem for \(\alpha_i\).
+
+    \item \textbf{Calculate the Weight Vector and Bias}:
+    After obtaining the optimal \(\alpha_i\), the weight vector \(\mathbf{w}\) can be calculated as:
+    
+    \[
+    \mathbf{w} = \sum_{i=1}^{N} \alpha_i y_i \mathbf{x}_i
+    \]
+
+    The bias term \(b\) can be computed using any support vector:
+    
+    \[
+    b = y_k - \mathbf{w} \cdot \mathbf{x}_k \quad \text{for any } k \text{ where } \alpha_k > 0
+    \]
+
+    \item \textbf{Make Predictions}:
+    Finally, to make predictions for a new sample \(\mathbf{x}\), use the decision function:
+    
+    \[
+    f(\mathbf{x}) = \mathbf{w} \cdot \mathbf{x} + b
+    \]
+    
+    The predicted class label is determined by the sign of \(f(\mathbf{x})\).
+\end{itemize}
