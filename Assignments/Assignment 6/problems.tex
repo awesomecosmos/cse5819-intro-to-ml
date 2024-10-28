@@ -46,155 +46,155 @@ Bagging (Bootstrap Aggregating) generally reduces model variance due to the foll
 
 \begin{align}
     \min_{w, b, \xi} \quad & \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 \label{eq:svm_objective} \\
-    \text{s.t.} \quad & y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i, \quad i \in \{1, \ldots, N\}, \label{eq:svm_constraint1} \\
-    & \xi_i \geq 0, \quad i \in \{1, \ldots, N\}. \label{eq:svm_constraint2}
+    \text{s.t.} \quad & y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i, \quad i \in \{1, \ldots, N\}, \nonumber \\
+    & \xi_i \geq 0, \quad i \in \{1, \ldots, N\} \nonumber
 \end{align}
-
-
-
 
 If we remove the last constraints \((\xi_i \geq 0)\), we might get a simpler optimization problem:
 
 \begin{align}
-    \min_{w, b, \xi} \quad & \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 \label{eq:svm_objective} \\
-    \text{s.t.} \quad & y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i, \quad i \in \{1, \ldots, N\}. \label{eq:svm_constraint}
+    \min_{w, b, \xi} \quad & \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 \label{eq:svm_objective2} \\
+    \text{s.t.} \quad & y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i, \quad i \in \{1, \ldots, N\}. \nonumber
 \end{align}
 
 
 \textbf{Please provide the Lagrangian of the above simplified formulation.}
 
-The Lagrangian for the simplified primal formulation of L2 SVM, where the last constraint \(\xi_i \geq 0\) is removed, can be formulated as follows:
+Given the simplified formulation, we can write the Lagrangian as:
+\begin{align}
+  \mathcal{L}(w, b, \xi, \alpha) &= \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 - \sum_{i=1}^{N} \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - (1 - \xi_i) \right) \label{eq:q2_a}
+\end{align}
 
-The simplified optimization problem is:
+where $\alpha_i \geq 0$ are the Lagrange multipliers.
+%- \(\alpha_i \geq 0\) are the Lagrange multipliers corresponding to each constraint.
 
-\[
-\min_{w, b, \xi} \quad \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2
-\]
-
-subject to the constraints:
-
-\[
-y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i, \quad \forall i \in \{1, \ldots, N\}
-\]
-
-The Lagrangian \(\mathcal{L}\) is formed by incorporating the constraints with Lagrange multipliers \(\alpha_i\):
-
-\[
-\mathcal{L}(w, b, \xi, \alpha) = \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 - \sum_{i=1}^{N} \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - (1 - \xi_i) \right)
-\]
-
-where:
-- \(\alpha_i \geq 0\) are the Lagrange multipliers corresponding to each constraint.
-
-The Lagrangian combines the original objective function and the penalty for violating the constraints, which will be optimized along with the primal variables \(w\), \(b\), and \(\xi\).
-
+%The Lagrangian combines the original objective function and the penalty for violating the constraints, which will be optimized along with the primal variables \(w\), \(b\), and \(\xi\).
 
 \textbf{(b) [15 pts] Please find the partial derivative of the Lagrangian in (a) with respect to $w$, $b$, and $\xi_i$.
 }
 
-The Lagrangian from part (a) is given by:
+We need to take the derivative of the Lagrangian (Eq. \ref{eq:q2_a}) with respect to each variable: $\mathbf{w}$, $b$, and $\xi_i$:
 
-\[
-\mathcal{L}(\mathbf{w}, b, \xi, \alpha) = \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 - \sum_{i=1}^{N} \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - (1 - \xi_i) \right)
-\]
+\begin{align}
+  \frac{\partial \mathcal{L}}{\partial \mathbf{w}} &= \frac{\partial}{\partial \mathbf{w}} \Bigg( \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 - \sum_{i=1}^{N} \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - (1 - \xi_i) \right) \Bigg) \nonumber \label{eq:q2_b_1} \\
+  &= \mathbf{w} - \sum_{i=1}^{N} \alpha_i y_i \mathbf{x}_i
+\end{align}
 
-We need to compute the partial derivatives with respect to \( \mathbf{w} \), \( b \), and \( \xi_i \):
+\begin{align}
+  \frac{\partial \mathcal{L}}{\partial b} &= \frac{\partial}{\partial b} \Bigg( \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 - \sum_{i=1}^{N} \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - (1 - \xi_i) \right) \Bigg) \nonumber \label{eq:q2_b_2} \\
+  &= -\sum_{i=1}^{N} \alpha_i y_i
+\end{align}
 
-1. **Partial Derivative with respect to \( \mathbf{w} \)**:
-
-\[
-\frac{\partial \mathcal{L}}{\partial \mathbf{w}} = \mathbf{w} - \sum_{i=1}^{N} \alpha_i y_i \mathbf{x}_i
-\]
-
-2. **Partial Derivative with respect to \( b \)**:
-
-\[
-\frac{\partial \mathcal{L}}{\partial b} = -\sum_{i=1}^{N} \alpha_i y_i
-\]
-
-3. **Partial Derivative with respect to \( \xi_i \)**:
-
-\[
-\frac{\partial \mathcal{L}}{\partial \xi_i} = C \xi_i - \alpha_i
-\]
-
-These partial derivatives are essential for setting up the conditions for optimality in the optimization problem of the L2 SVM formulation.
-
+\begin{align}
+  \frac{\partial \mathcal{L}}{\partial \xi_i} &= \frac{\partial}{\partial \xi_i} \Bigg( \frac{1}{2} \mathbf{w}^T \mathbf{w} + \frac{C}{2} \sum_{i=1}^{N} \xi_i^2 - \sum_{i=1}^{N} \alpha_i \left( y_i (\mathbf{w}^T \mathbf{x}_i + b) - (1 - \xi_i) \right) \Bigg) \nonumber \label{eq:q2_b_3} \\
+  &= C \xi_i - \alpha_i
+\end{align}
 
 \subsection{Cluster Analysis}
 
-\textbf{[25 pts]} Consider the following set of one-dimensional data points: \{0.1, 0.25, 0.45, 0.55, 0.8, 0.9\}. All the points are located in the range between [0, 1].
+\textbf{[25 pts] Consider the following set of one-dimensional data points: $\{0.1, 0.25, 0.45, 0.55, 0.8, 0.9\}$. All the points are located in the range between $[0, 1]$.}
 
-\textbf{(a) [15 pts]} Suppose we apply K-Means clustering to obtain three clusters, A, B, and C. If the initial centroids are located at \{0, 0.4, 1\}, respectively, show the cluster assignments and locations of the updated centroids after the first three iterations by filling out the following table. (Hint: although you can directly calculate all distances, if you draw a real axis and put down the points, it might be easier to see the cluster assignment.)
+\textbf{(a) [15 pts] Suppose we apply K-Means clustering to obtain three clusters, A, B, and C. If the initial centroids are located at $\{0, 0.4, 1\}$, respectively, show the cluster assignments and locations of the updated centroids after the first three iterations by filling out the following table. (Hint: although you can directly calculate all distances, if you draw a real axis and put down the points, it might be easier to see the cluster assignment.)}
 
 \begin{table}[h]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\text{Iter} & \text{Cluster assignment of data points} & \text{Centroid Location} \\
-\hline
-0 & 0.10, 0.25 & A \\
-  & 0.45, 0.55 & B \\
-  & 0.80, 0.90 & C \\
-\hline
-1 & 0.10, 0.25 & A (0.175) \\
-  & 0.45, 0.55 & B (0.5) \\
-  & 0.80, 0.90 & C (0.95) \\
-\hline
-2 & 0.10, 0.25 & A (0.175) \\
-  & 0.45, 0.55, 0.80 & B (0.55) \\
-  & 0.90 & C (0.90) \\
-\hline
-3 & 0.10, 0.25 & A (0.175) \\
-  & 0.45, 0.55, 0.80 & B (0.55) \\
-  & 0.90 & C (0.90) \\
-\hline
-\end{tabular}
-\caption{K-Means clustering results after three iterations.}
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    \textbf{Iter} & \multicolumn{6}{c|}{\textbf{Cluster Assignment of Data Points}} & \multicolumn{3}{c|}{\textbf{Centroid Location}} \\ \hline
+         & \textbf{0.1} & \textbf{0.25} & \textbf{0.45} & \textbf{0.55} & \textbf{0.8} & \textbf{0.9} & \textbf{A} & \textbf{B} & \textbf{C} \\ \hline
+    1    & A    &  B    &  B    &  B    &  C   &  C   & 0.1  & 0.116  & 0.15  \\ \hline
+    2    &  A   &  A    &  B    &   B   &  C   &  C   & 0.175  & 0.5  &  0.85 \\ \hline
+    3    & A   &  A    &  B    &   B   &  C   &  C   & 0.175  & 0.5  &  0.85 \\ \hline
+  \end{tabular}
+  \caption{Final results of this question.}
+  \label{tbl:q3_a}
 \end{table}
 
-\textbf{(b) [5 pts]} Find the sum-of-squared errors (SSE) of the clustering after the third iteration.
+Table \ref{tbl:q3_a} shows the final results from this excercise. My working is below.
 
-To calculate the SSE, we need to compute the squared distances of each data point from its respective cluster centroid.
+For the first iteration, we start with our initial cluster centroids $C_0 = \{0, 0.4, 1\}$, and calculate the Euclidean distance between each point to each centroid. This is shown in Table \ref{tbl:q3_a_1}.
 
-\[
-\text{SSE} = \sum_{i=1}^{k} \sum_{x_j \in C_i} (x_j - \mu_i)^2
-\]
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+           & \textbf{0.1} & \textbf{0.25} & \textbf{0.45} & \textbf{0.55} & \textbf{0.8} & \textbf{0.9} \\ \hline
+    $A_0 =0$   & \textcolor{blue}{0.1} & 0.25 & 0.45 &0.55  &0.8  & 0.9 \\ \hline
+    $B_0 =0.4$ & 0.3 & \textcolor{blue}{0.15} & \textcolor{blue}{0.05}  & \textcolor{blue}{0.15} & 0.4  & 0.5 \\ \hline
+    $C_0 =1$  & 0.9 &0.75  &0.55  &0.45    &\textcolor{blue}{0.2}   & \textcolor{blue}{0.1} \\ \hline
+  \end{tabular}
+  \caption{Euclidean distances between points and centroid $C_0$ locations. The determined cluster for each point, based on shortest distance, is shown in blue.}
+  \label{tbl:q3_a_1}
+\end{table}
 
-Where:
-- \( \mu_i \) is the centroid of cluster \( C_i \).
-- \( x_j \) is a data point in cluster \( C_i \).
+We then determine the new centroid locations, based on the mean of the points within each cluster (Eq. \ref{eq:q3_a_1}), to obtain the new centroid locations.
+\begin{align}
+  A_1 &= \frac{0.1}{1} = 0.1 \nonumber \\
+  B_1 &= \frac{0.25+0.45+0.55}{3} = 0.416 \nonumber \\
+  C_1 &= \frac{0.8+0.9}{2} = 0.85\label{eq:q3_a_1}
+\end{align}
 
-For the clusters after the third iteration:
+For the second iteration, we start with our cluster centroids $C_1 = \{0.1, 0.416, 0.85\}$, and calculate the Euclidean distance between each point to each centroid. This is shown in Table \ref{tbl:q3_a_2}.
 
-- **Cluster A**: Centroid = 0.175
-    - Points: 0.1, 0.25
-    - \( \text{SSE}_A = (0.1 - 0.175)^2 + (0.25 - 0.175)^2 = 0.005625 + 0.005625 = 0.01125 \)
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+           & \textbf{0.1} & \textbf{0.25} & \textbf{0.45} & \textbf{0.55} & \textbf{0.8} & \textbf{0.9} \\ \hline
+    $A_1 =0.1$   & \textcolor{blue}{0} & \textcolor{blue}{0.15} & 0.35 &0.45  &0.7  & 0.8 \\ \hline
+    $B_1 =0.416$ & 0.316 & 0.166 & \textcolor{blue}{0.034}  & \textcolor{blue}{0.134} & 0.384  & 0.484 \\ \hline
+    $C_1 =0.85$  & 0.75 &0.6  &0.4  &0.3 &\textcolor{blue}{0.05} & \textcolor{blue}{0.05} \\ \hline
+  \end{tabular}
+  \caption{Euclidean distances between points and centroid $C_1$ locations. The determined cluster for each point, based on shortest distance, is shown in blue.}
+  \label{tbl:q3_a_2}
+\end{table}
 
-- **Cluster B**: Centroid = 0.55
-    - Points: 0.45, 0.55, 0.8
-    - \( \text{SSE}_B = (0.45 - 0.55)^2 + (0.55 - 0.55)^2 + (0.8 - 0.55)^2 = 0.010000 + 0 + 0.062500 = 0.072500 \)
+We then determine the new centroid locations, based on the mean of the points within each cluster (Eq. \ref{eq:q3_a_2}), to obtain the new centroid locations.
+\begin{align}
+  A_2 &= \frac{0.1+0.25}{1} = 0.175 \nonumber \\
+  B_2 &= \frac{0.45+0.55}{2} = 0.5 \nonumber \\
+  C_2 &= \frac{0.8+0.9}{2} = 0.85\label{eq:q3_a_2}
+\end{align}
 
-- **Cluster C**: Centroid = 0.90
-    - Points: 0.90
-    - \( \text{SSE}_C = (0.9 - 0.90)^2 = 0 \)
+Finally, for the third iteration, we start with our cluster centroids $C_2 = \{0.175, 0.5, 0.85\}$, and calculate the Euclidean distance between each point to each centroid. This is shown in Table \ref{tbl:q3_a_3}.
 
-Thus, the total SSE is:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+           & \textbf{0.1} & \textbf{0.25} & \textbf{0.45} & \textbf{0.55} & \textbf{0.8} & \textbf{0.9} \\ \hline
+    $A_2 =0.175$ & \textcolor{blue}{0.075} & \textcolor{blue}{0.075} & 0.275 &0.375  &0.625  & 0.725 \\ \hline
+    $B_2 =0.5$ & 0.4 & 0.25 & \textcolor{blue}{0.05}  & \textcolor{blue}{0.05} & 0.3  & 0.4 \\ \hline
+    $C_2 =0.85$  & 0.75 &0.6  &0.4  &0.3 &\textcolor{blue}{0.05} & \textcolor{blue}{0.05} \\ \hline
+  \end{tabular}
+  \caption{Euclidean distances between points and centroid $C_2$ locations. The determined cluster for each point, based on shortest distance, is shown in blue.}
+  \label{tbl:q3_a_3}
+\end{table}
 
-\[
-\text{SSE} = \text{SSE}_A + \text{SSE}_B + \text{SSE}_C = 0.01125 + 0.0725 + 0 = 0.08375
-\]
+We then determine the final centroid locations, based on the mean of the points within each cluster (Eq. \ref{eq:q3_a_3}), to obtain the new centroid locations.
+\begin{align}
+  A_3 &= \frac{0.1+0.25}{1} = 0.175 \nonumber \\
+  B_3 &= \frac{0.45+0.55}{2} = 0.5 \nonumber \\
+  C_3 &= \frac{0.8+0.9}{2} = 0.85\label{eq:q3_a_3}
+\end{align}
 
-\textbf{(c) [5 pts]} For the dataset given in part (1), is it possible to obtain empty clusters? Why?
+\textbf{(b) [5 pts] Find the sum-of-squared errors (SSE) of the clustering after the third iteration. To calculate the SSE, we need to compute the squared distances of each data point from its respective cluster centroid.}
 
-Yes, it is possible to obtain empty clusters in K-Means clustering, particularly when the initial centroids are poorly chosen. 
+For each cluster, the SSE after the third iteration is given by:
 
-In the context of the dataset \{0.1, 0.25, 0.45, 0.55, 0.8, 0.9\} and the initial centroids \{0, 0.4, 1\}, the following scenarios can lead to empty clusters:
+\begin{align}
+  \text{SSE}_A &= (0.1-0.175)^2 + (0.25-0.175)^2 = 0.01125 \nonumber \\
+  \text{SSE}_B &= (0.45-0.5)^2 + (0.55-0.5)^2 = 0.005 \nonumber \\
+  \text{SSE}_C &= (0.8-0.85)^2 + (0.9-0.85)^2 = 0.005 \label{eq:q3b_1}
+\end{align}
 
-1. **Poor Initialization**: If the initial centroids are chosen such that no data points are close enough to a particular centroid, that cluster will remain empty throughout the iterations. For instance, if the centroid at 1 does not have any data points near it, it may end up being an empty cluster.
+Then the total SSE is given by:
+\begin{align}
+  \text{SSE} &= \text{SSE}_A + \text{SSE}_B + \text{SSE}_C \nonumber \\
+  &= 0.01125 + 0.005 + 0.005 \nonumber \\
+  &= 0.02125 \label{eq:q3b_2}
+\end{align}
 
-2. **Distance-based Assignments**: During the assignment step of K-Means, each data point is assigned to the nearest centroid. If the distances are such that all points are closer to the other centroids (e.g., points being closer to centroid 0 or 0.4), then the centroid at 1 will have no points assigned to it, leading to an empty cluster.
+\textbf{(c) [5 pts] For the dataset given in part (1), is it possible to obtain empty clusters? Why?}
 
-Thus, the occurrence of empty clusters is primarily influenced by the selection of initial centroids and the distribution of the data points.
-
-
+It is possible to obtain empty clusters, either because of poor random initialization, or because of the selected distance metric. For example, if the initial centroid locations were too far from the first few points, then it is possible the distance would have been too great in the first few iterations to be assigned to cluster A. Similarly, if we used some other distance metric, e.g. cosine distance, then that could have affected how each point is assigned to each data cluster.
