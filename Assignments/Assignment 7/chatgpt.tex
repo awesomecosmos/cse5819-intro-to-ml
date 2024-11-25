@@ -1,0 +1,351 @@
+\section{Part 1: ChatGPT Self-Learning (20pts)}
+
+You can start from the following prompts, but you need to create subsequent questions that attempt to understand the basic concepts of machine learning.
+
+\subsection{What is a recurrent neural network?}
+
+A recurrent neural network (RNN) is a type of artificial neural network designed for sequence data. Unlike feedforward neural networks, RNNs have connections that form directed cycles, allowing information to persist over time. This makes them particularly suited for tasks where context or sequential information is important, such as time series prediction, natural language processing, and speech recognition.
+
+Mathematically, an RNN processes a sequence of inputs \( x_1, x_2, \dots, x_T \) by maintaining a hidden state \( h_t \) at each time step \( t \). The hidden state is updated as follows:
+
+\[
+h_t = f(W_h h_{t-1} + W_x x_t + b)
+\]
+
+where:
+\begin{itemize}
+    \item \( h_t \) is the hidden state at time \( t \),
+    \item \( h_{t-1} \) is the hidden state from the previous time step,
+    \item \( x_t \) is the input at time \( t \),
+    \item \( W_h \) and \( W_x \) are weight matrices,
+    \item \( b \) is a bias vector,
+    \item \( f \) is a non-linear activation function, such as \texttt{tanh} or \texttt{ReLU}.
+\end{itemize}
+
+RNNs can suffer from issues like vanishing and exploding gradients during training, which can be addressed using variants like Long Short-Term Memory (LSTM) networks or Gated Recurrent Units (GRUs).
+
+\subsection{How many kinds of recurrent neural networks?}
+
+Recurrent neural networks (RNNs) can be categorized into several types based on how they process sequences and the structure of their connections. The main kinds of RNNs are:
+
+\begin{itemize}
+    \item \textbf{Vanilla RNNs:} The basic form of RNNs where each neuron uses simple activation functions like \texttt{tanh} or \texttt{ReLU}. They are suitable for simple sequence modeling but struggle with long-term dependencies due to vanishing gradients.
+
+    \item \textbf{Long Short-Term Memory (LSTM):} A type of RNN that uses special gating mechanisms (input, forget, and output gates) to retain information over longer sequences. LSTMs mitigate the vanishing gradient problem.
+
+    \item \textbf{Gated Recurrent Units (GRU):} A simplified version of LSTMs with fewer gates (update and reset gates). GRUs are computationally efficient and effective for many tasks.
+
+    \item \textbf{Bidirectional RNNs:} RNNs that process input sequences in both forward and backward directions, enabling the use of future context as well as past context. This is particularly useful for tasks like text translation or speech recognition.
+
+    \item \textbf{Sequence-to-Sequence (Seq2Seq) RNNs:} RNN architectures with an encoder-decoder structure. The encoder compresses the input sequence into a fixed representation, which the decoder then uses to generate an output sequence. These are common in machine translation and text summarization.
+
+    \item \textbf{Clockwork RNNs:} A variation of RNNs where different neurons operate at different time scales, allowing efficient modeling of long sequences with varying time dependencies.
+
+    \item \textbf{Attention-Based RNNs:} RNNs augmented with attention mechanisms to selectively focus on specific parts of the input sequence, improving performance on tasks with long input sequences.
+
+\end{itemize}
+
+Each type is designed to address specific limitations or enhance performance in certain sequence modeling tasks.
+
+
+\subsection{What are issues with recurrent neural networks?}
+
+Recurrent neural networks (RNNs) face several challenges that can impact their performance and usability in sequence modeling tasks. The main issues include:
+
+\begin{itemize}
+    \item \textbf{Vanishing Gradient Problem:} During backpropagation through time (BPTT), gradients can become extremely small, especially for long sequences. This makes it difficult for the RNN to learn long-term dependencies as the gradients effectively vanish.
+
+    \item \textbf{Exploding Gradient Problem:} Conversely, gradients can grow exponentially large during training, causing numerical instability and making the optimization process unreliable. Gradient clipping is often used to address this issue.
+
+    \item \textbf{Difficulty with Long-Term Dependencies:} RNNs struggle to capture dependencies between distant elements in a sequence. This limits their effectiveness for tasks requiring long-term memory.
+
+    \item \textbf{Computational Inefficiency:} RNNs process sequences sequentially, which limits parallelization during training and inference. This can make them slower compared to other models like transformers.
+
+    \item \textbf{Overfitting:} RNNs have a high capacity to model sequential data, making them prone to overfitting, especially when the dataset is small or noisy.
+
+    \item \textbf{Sensitivity to Input Length:} RNNs may not generalize well to sequences of lengths significantly different from those seen during training.
+
+    \item \textbf{Difficulty in Training:} Training RNNs can be challenging due to their complex architecture and issues like gradient instability. They also require careful initialization and hyperparameter tuning.
+
+    \item \textbf{Loss of Context in Vanilla RNNs:} Standard RNNs can forget important context over long sequences, which can reduce their effectiveness on complex tasks. Variants like LSTMs and GRUs help mitigate this issue but add computational complexity.
+
+\end{itemize}
+
+These challenges have led to the development of RNN variants (e.g., LSTMs, GRUs) and alternative architectures like transformers, which are better suited for handling long-range dependencies and parallel computation.
+
+\subsection{What is a gated recurrent unit?}
+
+A Gated Recurrent Unit (GRU) is a type of recurrent neural network (RNN) architecture designed to address the vanishing gradient problem and improve the efficiency of modeling long-term dependencies in sequence data. GRUs simplify the structure of Long Short-Term Memory (LSTM) units by using fewer gates while maintaining comparable performance.
+
+The GRU uses two primary gates:
+
+\begin{itemize}
+    \item \textbf{Update Gate:} Determines how much of the past information needs to be passed along to the future.
+    \item \textbf{Reset Gate:} Decides how much of the past information to forget.
+\end{itemize}
+
+The mathematical operations for a GRU at time step \( t \) are as follows:
+
+\[
+z_t = \sigma(W_z x_t + U_z h_{t-1} + b_z)
+\]
+\[
+r_t = \sigma(W_r x_t + U_r h_{t-1} + b_r)
+\]
+\[
+\tilde{h}_t = \tanh(W_h x_t + U_h (r_t \odot h_{t-1}) + b_h)
+\]
+\[
+h_t = (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t
+\]
+
+where:
+\begin{itemize}
+    \item \( z_t \) is the update gate vector,
+    \item \( r_t \) is the reset gate vector,
+    \item \( \tilde{h}_t \) is the candidate hidden state,
+    \item \( h_t \) is the final hidden state,
+    \item \( \sigma \) is the sigmoid activation function,
+    \item \( \odot \) represents element-wise multiplication,
+    \item \( W_z, W_r, W_h \) and \( U_z, U_r, U_h \) are weight matrices,
+    \item \( b_z, b_r, b_h \) are bias vectors,
+    \item \( x_t \) is the input at time \( t \),
+    \item \( h_{t-1} \) is the hidden state from the previous time step.
+\end{itemize}
+
+GRUs are computationally efficient and perform well on tasks requiring long-term memory, making them popular for applications like speech recognition, time-series analysis, and natural language processing.
+
+
+\subsection{What is a Long Short-Term Memory (LSTM) network?}
+
+A Long Short-Term Memory (LSTM) network is a specialized type of recurrent neural network (RNN) designed to effectively learn long-term dependencies in sequence data. LSTMs address the vanishing gradient problem that traditional RNNs face, enabling them to retain information over long sequences.
+
+The LSTM achieves this by using a memory cell and three gates:
+
+\begin{itemize}
+    \item \textbf{Forget Gate:} Decides what information to discard from the cell state.
+    \item \textbf{Input Gate:} Determines what new information to add to the cell state.
+    \item \textbf{Output Gate:} Controls what information to output from the cell state to the hidden state.
+\end{itemize}
+
+The mathematical operations for an LSTM at time step \( t \) are as follows:
+
+\[
+f_t = \sigma(W_f x_t + U_f h_{t-1} + b_f)
+\]
+\[
+i_t = \sigma(W_i x_t + U_i h_{t-1} + b_i)
+\]
+\[
+\tilde{c}_t = \tanh(W_c x_t + U_c h_{t-1} + b_c)
+\]
+\[
+c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t
+\]
+\[
+o_t = \sigma(W_o x_t + U_o h_{t-1} + b_o)
+\]
+\[
+h_t = o_t \odot \tanh(c_t)
+\]
+
+where:
+\begin{itemize}
+    \item \( f_t \) is the forget gate vector,
+    \item \( i_t \) is the input gate vector,
+    \item \( \tilde{c}_t \) is the candidate cell state,
+    \item \( c_t \) is the updated cell state,
+    \item \( o_t \) is the output gate vector,
+    \item \( h_t \) is the hidden state,
+    \item \( \sigma \) is the sigmoid activation function,
+    \item \( \tanh \) is the hyperbolic tangent activation function,
+    \item \( \odot \) represents element-wise multiplication,
+    \item \( W_f, W_i, W_c, W_o \) and \( U_f, U_i, U_c, U_o \) are weight matrices,
+    \item \( b_f, b_i, b_c, b_o \) are bias vectors,
+    \item \( x_t \) is the input at time \( t \),
+    \item \( h_{t-1} \) and \( c_{t-1} \) are the hidden state and cell state from the previous time step.
+\end{itemize}
+
+LSTMs are widely used in applications such as natural language processing, time series forecasting, speech recognition, and video analysis due to their ability to model long-term dependencies effectively.
+
+\subsection{What is an autoencoder?}
+
+An autoencoder is a type of artificial neural network designed to learn an efficient, compressed representation of data, typically for dimensionality reduction or feature extraction. It consists of two main components:
+
+\begin{itemize}
+    \item \textbf{Encoder:} Maps the input data \( x \) to a latent-space representation \( z \), typically of lower dimensionality, using one or more neural network layers.
+    \item \textbf{Decoder:} Reconstructs the input data \( x \) from the latent representation \( z \), attempting to minimize the reconstruction error.
+\end{itemize}
+
+Mathematically, the autoencoder can be represented as:
+
+\[
+z = f_{\text{encoder}}(x) = \sigma(W_e x + b_e)
+\]
+\[
+\hat{x} = f_{\text{decoder}}(z) = \sigma(W_d z + b_d)
+\]
+
+where:
+\begin{itemize}
+    \item \( x \) is the input data,
+    \item \( z \) is the latent representation,
+    \item \( \hat{x} \) is the reconstructed data,
+    \item \( W_e, b_e \) are the weights and biases of the encoder,
+    \item \( W_d, b_d \) are the weights and biases of the decoder,
+    \item \( \sigma \) is an activation function, such as \texttt{ReLU} or \texttt{sigmoid}.
+\end{itemize}
+
+The goal of training an autoencoder is to minimize the reconstruction loss, typically using a metric like mean squared error (MSE):
+
+\[
+\mathcal{L} = \| x - \hat{x} \|^2
+\]
+
+Autoencoders come in various types, including:
+\begin{itemize}
+    \item \textbf{Denoising Autoencoders:} Train the network to reconstruct clean input data from noisy data.
+    \item \textbf{Sparse Autoencoders:} Encourage sparsity in the latent representation \( z \) for feature selection.
+    \item \textbf{Variational Autoencoders (VAEs):} Use probabilistic techniques to learn a latent space with a structured distribution.
+    \item \textbf{Convolutional Autoencoders:} Use convolutional layers for image data to learn spatially meaningful latent representations.
+\end{itemize}
+
+Autoencoders are widely used in applications such as anomaly detection, image denoising, data compression, and as a pretraining step for other machine learning models.
+
+\subsection{How many kinds of autoencoders?}
+
+Autoencoders come in various types, each designed to address specific tasks or constraints. The main kinds of autoencoders include:
+
+\begin{itemize}
+    \item \textbf{Vanilla Autoencoder:} A basic autoencoder with fully connected layers in the encoder and decoder. It is primarily used for dimensionality reduction or reconstruction tasks.
+
+    \item \textbf{Denoising Autoencoder:} Trains the autoencoder to reconstruct clean input data from a noisy version of the data, making it effective for tasks like image denoising or data cleaning.
+
+    \item \textbf{Sparse Autoencoder:} Encourages sparsity in the latent representation by adding a sparsity penalty to the loss function. It is useful for feature extraction and selection.
+
+    \item \textbf{Contractive Autoencoder:} Adds a penalty to the loss function to make the latent space more robust to small changes in the input, improving its generalization ability.
+
+    \item \textbf{Variational Autoencoder (VAE):} Uses a probabilistic framework to learn a structured latent space, enabling generation of new data samples by sampling from the latent distribution.
+
+    \item \textbf{Convolutional Autoencoder:} Uses convolutional layers instead of fully connected layers, making it well-suited for image data. It learns spatially meaningful latent representations.
+
+    \item \textbf{Stacked Autoencoder:} Combines multiple autoencoders in a layered manner, where each layer’s output serves as the input to the next. This deep architecture enables learning hierarchical features.
+
+    \item \textbf{Undercomplete Autoencoder:} Has a bottleneck in the architecture where the latent representation is of lower dimensionality than the input, forcing the network to learn efficient data representations.
+
+    \item \textbf{Overcomplete Autoencoder:} Has a latent representation with a higher dimensionality than the input, often paired with regularization techniques to avoid simply copying the input to the output.
+
+    \item \textbf{Multimodal Autoencoder:} Trained on data from multiple modalities (e.g., images and text) to learn a joint representation across different types of data.
+
+    \item \textbf{Generative Autoencoder:} Combines autoencoder principles with generative models to produce new samples from the latent space, often used in applications like image generation.
+\end{itemize}
+
+Each type of autoencoder is tailored to specific tasks, making autoencoders a versatile tool in deep learning for applications like data compression, anomaly detection, feature extraction, and generative modeling.
+
+\subsection{What is a convolutional neural network?}
+
+A Convolutional Neural Network (CNN) is a specialized type of deep neural network designed for processing data with a grid-like topology, such as images. CNNs are particularly effective in tasks like image classification, object detection, and segmentation, as they can automatically and adaptively learn spatial hierarchies of features from data.
+
+A CNN consists of the following key components:
+
+\begin{itemize}
+    \item \textbf{Convolutional Layers:} Apply convolution operations to extract local features from the input data. A convolution operation involves sliding a filter (or kernel) over the input and computing element-wise multiplications and summations to produce a feature map. Mathematically, the convolution operation can be expressed as:
+    \[
+    (f * g)(x, y) = \sum_{i} \sum_{j} f(i, j) \cdot g(x - i, y - j)
+    \]
+    where \( f \) is the filter, \( g \) is the input, and \((x, y)\) denotes spatial positions.
+
+    \item \textbf{Activation Functions:} Apply non-linear functions such as \texttt{ReLU} (Rectified Linear Unit) to introduce non-linearity, allowing the network to model complex relationships.
+
+    \item \textbf{Pooling Layers:} Reduce the spatial dimensions of feature maps, making the network computationally efficient and robust to small variations in the input. Common pooling techniques include max pooling and average pooling.
+
+    \item \textbf{Fully Connected Layers:} Connect all neurons in the previous layer to each neuron in the current layer, combining the extracted features for making predictions.
+
+    \item \textbf{Dropout Layers:} Introduce regularization by randomly setting a fraction of the neurons' outputs to zero during training, preventing overfitting.
+
+    \item \textbf{Softmax Layer:} Used in the output layer for multi-class classification problems, converting the raw scores into probabilities.
+\end{itemize}
+
+The key advantages of CNNs include:
+
+\begin{itemize}
+    \item \textbf{Local Connectivity:} Leverages the spatial structure of data, allowing efficient feature extraction.
+    \item \textbf{Parameter Sharing:} Reuses the same filter across different regions of the input, reducing the number of parameters and computational cost.
+    \item \textbf{Translation Invariance:} Detects features regardless of their position in the input.
+\end{itemize}
+
+CNNs are widely used in applications such as image recognition, video analysis, medical imaging, natural language processing (with 1D convolutions), and more.
+
+\subsection{What is the convolution operator?}
+
+The convolution operator is a mathematical operation used to extract features from an input by combining it with a filter (or kernel). It is widely used in convolutional neural networks (CNNs) to process data with spatial or temporal structure, such as images or time-series data.
+
+Mathematically, for a 2D input \( I(x, y) \) and a filter \( K(i, j) \), the convolution operation is defined as:
+
+\[
+(I * K)(x, y) = \sum_{i} \sum_{j} K(i, j) \cdot I(x - i, y - j)
+\]
+
+Here:
+\begin{itemize}
+    \item \( I(x, y) \): Input data (e.g., an image),
+    \item \( K(i, j) \): Filter (or kernel), a small matrix of learnable weights,
+    \item \( x, y \): Spatial coordinates of the output,
+    \item \( i, j \): Spatial indices of the filter.
+\end{itemize}
+
+In the context of CNNs, the operation is often implemented using the following steps:
+
+\begin{itemize}
+    \item Slide the filter \( K \) over the input \( I \) at every position \((x, y)\).
+    \item Compute the element-wise product between the filter and the corresponding region of the input.
+    \item Sum the resulting values to produce a single output value for position \((x, y)\).
+\end{itemize}
+
+\textbf{Properties of the Convolution Operator:}
+\begin{itemize}
+    \item \textbf{Local Receptive Field:} The filter focuses on a small region of the input at each step, capturing local patterns.
+    \item \textbf{Parameter Sharing:} The same filter is applied across the entire input, reducing the number of learnable parameters.
+    \item \textbf{Translation Invariance:} The operation detects features regardless of their position in the input.
+\end{itemize}
+
+\textbf{Variants in Practice:}
+\begin{itemize}
+    \item \textbf{Strided Convolution:} Introduces a step size (stride) for moving the filter across the input, controlling the resolution of the output.
+    \item \textbf{Padding:} Adds a border of zeros around the input to preserve spatial dimensions or avoid losing edge information.
+    \item \textbf{1D and 3D Convolution:} Used for processing 1D signals (e.g., time-series data) or 3D inputs (e.g., video data) respectively.
+\end{itemize}
+
+The convolution operator is central to CNNs, enabling the detection of spatially meaningful features such as edges, textures, and patterns in data.
+
+
+\subsection{What does the output of an encoder look like?}
+
+The output of an encoder in a neural network, particularly in the context of autoencoders, sequence-to-sequence models, or transformers, typically consists of a lower-dimensional, compressed representation of the input data. This output is often referred to as the "latent space" or "encoded representation." The key characteristics of the encoder's output are as follows:
+
+\begin{itemize}
+    \item \textbf{Lower Dimensionality:} The encoder maps the input data to a representation with fewer dimensions than the input. For example, an image of size \( 256 \times 256 \times 3 \) may be encoded into a vector of size \( 128 \) or smaller.
+    
+    \item \textbf{Abstract Features:} The encoder's output captures high-level, abstract features of the input data, depending on the task. For example, in an image encoder, it may represent visual patterns, textures, or objects in a compressed form.
+    
+    \item \textbf{Vector or Tensor Representation:} The output is often a vector (1D) or a tensor (2D or higher), depending on the architecture. In the case of an autoencoder, the latent representation may be a flat vector, whereas in models like convolutional autoencoders, it could be a 3D tensor with spatial structure preserved.
+    
+    \item \textbf{Encoded Representation (Latent Space):} The encoder attempts to preserve essential features of the input in a compact form. This representation is used by the decoder (in autoencoders) or other parts of the network (in sequence models or transformers) to reconstruct the original input or generate an output based on the learned features.
+    
+    \item \textbf{Probabilistic Output (in Variational Autoencoders):} In the case of variational autoencoders (VAEs), the encoder produces parameters of a probability distribution (mean and variance) rather than a deterministic representation, allowing for the generation of diverse samples by sampling from the latent distribution.
+\end{itemize}
+
+Mathematically, the output of an encoder can be expressed as:
+
+\[
+z = f_{\text{encoder}}(x)
+\]
+
+where:
+\begin{itemize}
+    \item \( x \) is the input data (e.g., an image or a sequence),
+    \item \( z \) is the latent representation (the output of the encoder),
+    \item \( f_{\text{encoder}} \) is the encoding function.
+\end{itemize}
+
+In summary, the output of an encoder is a compact, abstract representation of the input data that captures its most salient features, often in a lower-dimensional space, and can be used for reconstruction, classification, or other tasks depending on the model.
